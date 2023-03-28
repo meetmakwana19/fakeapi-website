@@ -79,7 +79,7 @@ categories_req.onreadystatechange = function(){
 
 
 const navCollapseDiv = document.querySelector(".collapse")
-console.log(navCollapseDiv);
+// console.log(navCollapseDiv);
 
 function createNavItems(cats){
     const navUlEl = document.createElement("ul")
@@ -90,8 +90,21 @@ function createNavItems(cats){
         <a class="nav-link active" aria-current="page" href="#">${cats}</a>
     </li>
     `
+    // document.getElementById("nav-form").insertAdjacentHTML("beforebegin", navUlEl)
+
     return navUlEl
 }
 
 categories_req.open("GET", "https://fakestoreapi.com/products/categories")
 categories_req.send()
+
+// adding search form in BS navbar
+const navForm = document.createElement("form")
+navForm.classList.add("d-flex")
+navForm.setAttribute("role", "search")
+navForm.setAttribute("id", "nav-form")
+navForm.innerHTML = `
+<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+<button class="btn btn-outline-success" type="submit">Search</button>
+`
+navCollapseDiv.appendChild(navForm)
