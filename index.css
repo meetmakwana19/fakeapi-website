@@ -22,7 +22,28 @@
 #products-grid{
     margin: 1rem 8rem;
 }
+/* for small screens */
+@media (max-width: 750px) {
+    .prod-h{
+        padding: 1rem 4rem;
+    }    
+    #products-grid{
+        margin: 1rem 4rem;
+    } 
+}
+@media (max-width: 750px) {
+    .prod-h{
+        padding: 1rem 2rem;
+    }    
+    #products-grid{
+        margin: 1rem 2rem;
+    }
+}
 .product-div{
-    border: 1px solid black;
-    
+    overflow:hidden;
+}
+.product-div > img{
+    object-fit:cover;
+    height: 10rem;
+    width: auto;
 }
