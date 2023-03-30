@@ -18,3 +18,11 @@
 .prod-h{
     padding: 1rem 8rem;
 }
+
+#products-grid{
+    margin: 1rem 8rem;
+}
+.product-div{
+    border: 1px solid black;
+    
+}

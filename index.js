@@ -39,10 +39,11 @@ httpRequest.send()
 
 // products
 
-const productsDiv = document.querySelector("#products")
+const productsDiv = document.querySelector("#products-grid")
 
 function createProducts(prod){
     const prodDiv = document.createElement("div")
+    prodDiv.classList.add("col-lg-3", "col-md-4", "col-sm-6", "col-12", "product-div", "p-4")
 
     prodDiv.innerHTML = `
     <h1>${prod.title}</h1>
