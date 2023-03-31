@@ -164,7 +164,7 @@ const productInfo_req = new XMLHttpRequest();
 productInfo_req.onreadystatechange = function(){
     if(productInfo_req.readyState === XMLHttpRequest.DONE){
         if(productInfo_req.status === 200){
-            console.log("API Respone :", JSON.parse(productInfo_req.responseText));
+            // console.log("API Respone :", JSON.parse(productInfo_req.responseText));
 
             const infoArray = JSON.parse(productInfo_req.responseText)
 
@@ -270,7 +270,12 @@ modalDiv.innerHTML = `
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    ...
+    <form>
+    <div class="form mb-3">
+    <label class="form-label">Data object in JSON form</label>
+    <textarea class="form-control" id="data" style="height: 100px"></textarea>
+    </div>  
+    </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -330,7 +335,6 @@ modalDiv2.innerHTML = `
 `
 
 function createTable(prod){
-    console.log("gettiing here");
     const trBody = document.createElement("tr") 
     
     trBody.innerHTML = `
