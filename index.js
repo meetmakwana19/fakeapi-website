@@ -6,20 +6,24 @@ a = document.body
 
 console.log(a)
 
+let product_id;
+
+// ************index.html part*******************
+
 // ----------------- GET all products part : 
 
 // XMLHttpRequest() is a constructor directly and not a class in JS
 // The constructor initializes an XMLHttpRequest. It must be called before any other method calls.
-const httpRequest = new XMLHttpRequest()
+const getAllProdsReq = new XMLHttpRequest()
 
 // function() is a handler and not callback
-httpRequest.onreadystatechange = function(){
-    if(httpRequest.readyState === XMLHttpRequest.DONE){
-        if(httpRequest.status === 200){
-            // console.log("API Response: ", JSON.parse(httpRequest.responseText));
+getAllProdsReq.onreadystatechange = function(){
+    if(getAllProdsReq.readyState === XMLHttpRequest.DONE){
+        if(getAllProdsReq.status === 200){
+            // console.log("API Response: ", JSON.parse(getAllProdsReq.responseText));
 
             // parsing the responseText which is in string means string to JSON
-            const productsArray = JSON.parse(httpRequest.responseText)
+            const productsArray = JSON.parse(getAllProdsReq.responseText)
 
             productsArray.map(
                 function(prod) {
@@ -37,8 +41,8 @@ httpRequest.onreadystatechange = function(){
 }
 
 
-httpRequest.open("GET", "https://fakestoreapi.com/products")
-httpRequest.send()
+getAllProdsReq.open("GET", "https://fakestoreapi.com/products")
+getAllProdsReq.send()
 
 // ---------------- Populating all products on index.html
 const productsDiv = document.querySelector("#products-grid")
@@ -51,16 +55,21 @@ function createProducts(prod){
     <img src="${prod.image}" width="auto" class="mb-4">
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
-
+    <p>${prod.id}</p>
     `
     // --------Redirecting to product page
     prodDiv.addEventListener("click", function(){
-        console.log("hello");
+        // saving product id in localstorage as when product.html is redirected, a new instance of javascript is genrated where the id info gets lost.
+        // So to avoid loss of id, saving it in local storage
+        localStorage.setItem("product_id", prod.id)
+
         // setting the URL to redirect to   
-        window.location.href = "product.html"
+        window.location.href = "product.html" 
     })
     return prodDiv
 }
+
+// *****************Navbar********************
 
 // -------- Nav items
 // -------- GET all categories :
@@ -86,7 +95,6 @@ categories_req.onreadystatechange = function(){
         }
     }
 }
-
 
 const navCollapseDiv = document.querySelector(".collapse")
 
@@ -118,6 +126,8 @@ navForm.innerHTML = `
 `
 navCollapseDiv.appendChild(navForm)
 
+// ***************product.html part************
+
 // ---------------Product page part for product.html:
 
 const productInfo_req = new XMLHttpRequest();
@@ -132,30 +142,38 @@ productInfo_req.onreadystatechange = function(){
             // infoArray.map(function(prod){
             //     prodContainer.appendChild(createInfo(prod))
             // })
-            prodContainer.appendChild(createInfo(infoArray))
+            if(prodContainer){
+                prodContainer.appendChild(createInfo(infoArray))
+            }
         }
         else{
             alert("Some error occured.")
         }
     }
 }
-productInfo_req.open("GET", "https://fakestoreapi.com/products/1")
-productInfo_req.send();
 
+// productInfo_req.open("GET", "https://fakestoreapi.com/products/1")
+
+// console.log("gettid id is --->", localStorage.getItem("product_id"));
+productInfo_req.open("GET", `https://fakestoreapi.com/products/${localStorage.getItem("product_id")}`)
+productInfo_req.send();
+    
 // ---------------- Populating product's info on product.html
 const prodContainer = document.querySelector("#prod-container")
-
+    
 function createInfo(prod){
     console.log("creting from", prod);
-
+    
     const infoPage = document.createElement("section")
     infoPage.classList.add("row")
 
     infoPage.innerHTML = `
     <p>> ${prod.category.charAt(0).toUpperCase() + prod.category.slice(1)}</p>
+
     <div class="col-lg-6 text-center border p-5">
         <img src="${prod.image}" width="auto" class="">
     </div>
+    
     <div class="col-lg-6 border p-5">
         <h3>${prod.title}</h3>
         <p>${prod.rating}</p>
