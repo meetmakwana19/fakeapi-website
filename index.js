@@ -167,20 +167,37 @@ function createInfo(prod){
     const infoPage = document.createElement("section")
     infoPage.classList.add("row")
 
-    infoPage.innerHTML = `
-    <p>> ${prod.category.charAt(0).toUpperCase() + prod.category.slice(1)}</p>
+    // ****Formatting of raw description string
+    // Split the description by full stops and Remove empty elements from the array
+    const sentences = prod.description.split(".").filter(sentence => sentence.trim() !== ""); 
+    // Wrap each sentence in an HTML list item
+    const listItems = sentences.map(sentence => `<li>${sentence}</li>`)
+    // Join the list items and wrap them in an HTML unordered list
+    const bulletList = `<ul>${listItems.join("")}</ul>`
 
-    <div class="col-lg-6 text-center border p-5">
+    infoPage.innerHTML = `
+    <strong class="mb-4">> ${prod.category.charAt(0).toUpperCase() + prod.category.slice(1)}</strong>
+
+    <div class="col-lg-6 text-center p-5">
         <img src="${prod.image}" width="auto" class="">
     </div>
-    
-    <div class="col-lg-6 border p-5">
+
+    <div class="col-lg-6 p-5">
         <h3>${prod.title}</h3>
-        <p>${prod.rating}</p>
-        <h6>${prod.price}</h6>
-        <p>${prod.description}</p>
+        <div class="rating d-flex border justify-content-evenly">
+            <div id="rating-div">${prod.rating.rate} <i class="bi bi-star-fill"></i></div>
+            <span>|</span>
+            <div id="rating-count">
+                ${prod.rating.count} Ratings
+            </div>
+        </div>
+        <hr>
+        <h3 class="d-inline"><span>₹</span></h3>
+        <h4 class="d-inline">${prod.price}</h4>
+        <hr>
+        <h6>PRODUCT DETAILS <i class="bi bi-card-text"></i></h6>
+        ${bulletList}
     </div>
     `
-
     return infoPage;
 }

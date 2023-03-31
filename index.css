@@ -1,3 +1,6 @@
+/* bootstrap icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+
 /* navbar--------------- */
 .navbar{
     height: 5rem;
@@ -63,4 +66,21 @@ a {
 /* ----------product.html */
 #prod-container > section > div > img {
     height: 50vh;
+    overflow:hidden;
+}
+.rating{
+    width: 35%;
+}
+#rating-div, #rating-count {
+    padding: 0.5rem;
+}
+#prod-container > section > div > div > span{
+    padding: 0.5rem 0;
+}
+.bi-star-fill{
+    color: #72bfbc;
+}
+#prod-container > section > div > h6{
+    font-weight: 700;
+    color: #282c3f;
 }
