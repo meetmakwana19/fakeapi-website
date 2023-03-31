@@ -102,3 +102,25 @@ a {
     font-weight: 700;
     color: #282c3f;
 }
+
+/* **************dashboard.html */
+
+table{
+    font-size: large;
+}
+td > img{
+    height: 20vh;
+}
+td > .bi {
+    font-size: larger;
+    margin: 0 1rem;
+}
+.bi-plus-circle-fill{
+    color: #0aa688;
+}
+.bi-pencil-square{
+    color: #ff905a;
+}
+.bi-trash3{
+    color: #ff3e6c;
+}

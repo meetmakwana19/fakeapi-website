@@ -113,7 +113,10 @@ getAllProdsReq.onreadystatechange = function(){
                 function(prod) {
                     // if condition because using the same JS file for other html page too which doesnt need this function
                     if(productsDiv){
-                        productsDiv.appendChild(  createProducts(prod))
+                        productsDiv.appendChild(createProducts(prod))
+                    }
+                    if(tbody){
+                        tbody.appendChild(createTable(prod))
                     }
                 }
             )
@@ -226,4 +229,54 @@ function createInfo(prod){
     </div>
     `
     return infoPage;
+}
+
+// ***************dashboard.html part************
+
+const dashboardContainer = document.querySelector("#dashboard-container")
+
+const h2 = document.createElement("h2")
+h2.innerHTML = `Mytra Dashboard`
+
+const h4 = document.createElement("h4")
+h4.classList.add("float-end")
+h4.innerHTML = `
+Add a product <i class="bi bi-plus-circle-fill"></i>`
+
+const table = document.createElement("table")
+table.classList.add("table", "table-hover", "table-borderless", "my-5")
+
+const thead = document.createElement("thead")
+const tr = document.createElement("tr") 
+tr.innerHTML = `
+<th scope="col"></th>
+<th scope="col" style="width: 50%;">Product Title</th>
+<th scope="col">Preview</th>
+<th scope="col">Action</th>
+`
+const tbody = document.createElement("tbody")
+
+thead.appendChild(tr)
+// tbody.appendChild(trBody)
+
+table.appendChild(thead)
+table.appendChild(tbody)
+
+dashboardContainer.appendChild(h2)
+dashboardContainer.appendChild(h4)
+dashboardContainer.appendChild(table)
+
+
+function createTable(prod){
+    console.log("gettiing here");
+    const trBody = document.createElement("tr") 
+
+    trBody.innerHTML = `
+    <th scope="row">${prod.id}</th>
+    <td>${prod.title}</td>
+    <td><img src="${prod.image}"></td>
+    <td><i class="bi bi-pencil-square"></i> | <i class="bi bi-trash3"></i> </td>
+    `
+
+    return trBody;
 }
