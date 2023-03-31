@@ -105,6 +105,10 @@ a {
 
 /* **************dashboard.html */
 
+#dashboard-container > h4:hover{
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    cursor: pointer;
+}
 table{
     font-size: large;
 }
@@ -113,14 +117,20 @@ td > img{
 }
 td > .bi {
     font-size: larger;
-    margin: 0 1rem;
+    margin: 1rem 1rem;
 }
 .bi-plus-circle-fill{
     color: #0aa688;
 }
 .bi-pencil-square{
     color: #ff905a;
+    padding: 1rem;
 }
 .bi-trash3{
     color: #ff3e6c;
+    padding: 1rem;
+}
+.bi-pencil-square:hover, .bi-trash3:hover{
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    background-color: white;
 }

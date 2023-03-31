@@ -236,10 +236,10 @@ function createInfo(prod){
 const dashboardContainer = document.querySelector("#dashboard-container")
 
 const h2 = document.createElement("h2")
-h2.innerHTML = `Mytra Dashboard`
+h2.innerHTML = `Mytra Dashboard <hr/>`
 
 const h4 = document.createElement("h4")
-h4.classList.add("float-end")
+h4.classList.add("float-end", "p-3", "my-4")
 h4.setAttribute("type", "button")
 h4.setAttribute("data-bs-toggle", "modal")
 h4.setAttribute("data-bs-target", "#post-modal")
