@@ -49,7 +49,14 @@ function createProducts(prod){
     <img src="${prod.image}" width="auto" class="mb-4">
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
+
     `
+    // --------Redirecting to product page
+    prodDiv.addEventListener("click", function(){
+        console.log("hello");
+        // setting the URL to redirect to   
+        window.location.href = "product.html"
+    })
     return prodDiv
 }
 
