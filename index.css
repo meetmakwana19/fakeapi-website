@@ -58,4 +58,9 @@
 a {
     color: inherit;
     text-decoration: none;
-  }
+}
+
+/* ----------product.html */
+#prod-container > section > div > img {
+    height: 50vh;
+}
