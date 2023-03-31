@@ -134,3 +134,9 @@ td > .bi {
     box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
     background-color: white;
 }
+
+/* ************FOOTER************** */
+footer{
+    background-color: #fafbfc;
+    height: 30vh;
+}

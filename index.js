@@ -366,3 +366,4 @@ function createTable(prod){
 
 const editIcon = document.querySelector(".edit-icon")
 editIcon.appendChild(modalDiv2)
+
