@@ -13,6 +13,24 @@
 .navbar-brand > img{
     height: 8vh;
 }
+.nav-link{
+    margin: 0 1rem;
+    font-weight: 450;
+    color: #282c3f;
+}
+.nav-icons{
+    margin: 0 5rem;
+    margin-right: 0;
+}
+.nav-icons > div > p {
+    font-weight: bold;
+    font-size: small;
+    margin: 0;
+}
+.bi-person, .bi-heart, .bi-handbag, .bi-person-bounding-box{
+    font-size: 150%;
+}
+
 
 /* carousel */
 .carousel-control-next,

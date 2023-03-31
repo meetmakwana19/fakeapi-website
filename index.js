@@ -8,6 +8,90 @@ console.log(a)
 
 let product_id;
 
+// *****************Navbar********************
+
+// -------- Nav items
+// -------- GET all categories :
+
+const categories_req = new XMLHttpRequest()
+
+categories_req.onreadystatechange = function(){
+    if(categories_req.readyState === XMLHttpRequest.DONE){
+        if(categories_req.status === 200){
+            // console.log("API Response: ", JSON.parse(categories_req.responseText));
+
+            const categoriesArray = JSON.parse(categories_req.responseText)
+            console.log("categoriesArray : ",categoriesArray);
+
+            categoriesArray.map(
+                function(cats) {
+                    navCollapseDiv.appendChild(createNavItems(cats))
+                }
+            )
+            // *imp : append the searchbar here after the categories are fetched and populated from API otherwise due to JS Async nature, the searchbar will be rendered first.
+            navCollapseDiv.appendChild(navForm)
+            navCollapseDiv.appendChild(navIcons)
+        }
+        else{
+            alert("Some error occured to fetch categories.")
+        }
+    }
+}
+
+const navCollapseDiv = document.querySelector(".collapse")
+
+const navUlEl = document.createElement("ul")
+navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0")
+
+function createNavItems(cats){
+
+    const liEl = document.createElement("li")
+    liEl.classList.add("nav-item")
+
+    liEl.innerHTML = `
+    <a class="nav-link active" aria-current="page" href="#">${cats.charAt(0).toUpperCase() + cats.slice(1)}</a>
+    `
+
+    navUlEl.appendChild(liEl)
+    return navUlEl
+}
+
+categories_req.open("GET", "https://fakestoreapi.com/products/categories")
+categories_req.send()
+
+// adding search form in BS navbar
+const navForm = document.createElement("form")
+navForm.classList.add("d-flex")
+navForm.setAttribute("role", "search")
+navForm.setAttribute("id", "nav-form")
+navForm.innerHTML = `
+<input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
+<button class="btn btn-outline-success" type="submit">Search</button>
+`
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+const navIcons = document.createElement("div")
+navIcons.classList.add("nav-icons", "d-flex", "align-items-center")
+navIcons.innerHTML = `
+<div class="d-flex flex-column text-center mx-4">
+    <i class="bi bi-person"></i>
+    <p>Profile</p>
+</div>
+<div class="d-flex flex-column text-center mx-4">
+    <i class="bi bi-heart"></i>
+    <p>Wishlist</p>
+</div>
+<div class="d-flex flex-column text-center mx-4">
+    <i class="bi bi-handbag"></i>
+    <p>Bag</p>
+</div>
+<div class="d-flex flex-column text-center mx-4">
+    <i class="bi bi-person-bounding-box"></i>
+    <p>Admin</p>
+</div>
+`
+
 // ************index.html part*******************
 
 // ----------------- GET all products part : 
@@ -67,63 +151,6 @@ function createProducts(prod){
     })
     return prodDiv
 }
-
-// *****************Navbar********************
-
-// -------- Nav items
-// -------- GET all categories :
-
-const categories_req = new XMLHttpRequest()
-
-categories_req.onreadystatechange = function(){
-    if(categories_req.readyState === XMLHttpRequest.DONE){
-        if(categories_req.status === 200){
-            // console.log("API Response: ", JSON.parse(categories_req.responseText));
-
-            const categoriesArray = JSON.parse(categories_req.responseText)
-            console.log("categoriesArray : ",categoriesArray);
-
-            categoriesArray.map(
-                function(cats) {
-                    navCollapseDiv.appendChild(createNavItems(cats))
-                }
-            )
-        }
-        else{
-            alert("Some error occured to fetch categories.")
-        }
-    }
-}
-
-const navCollapseDiv = document.querySelector(".collapse")
-
-function createNavItems(cats){
-    const navUlEl = document.createElement("ul")
-    navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0")
-
-    navUlEl.innerHTML = `
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">${cats}</a>
-    </li>
-    `
-    // document.getElementById("nav-form").insertAdjacentHTML("beforebegin", navUlEl)
-
-    return navUlEl
-}
-
-categories_req.open("GET", "https://fakestoreapi.com/products/categories")
-categories_req.send()
-
-// adding search form in BS navbar
-const navForm = document.createElement("form")
-navForm.classList.add("d-flex")
-navForm.setAttribute("role", "search")
-navForm.setAttribute("id", "nav-form")
-navForm.innerHTML = `
-<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-<button class="btn btn-outline-success" type="submit">Search</button>
-`
-navCollapseDiv.appendChild(navForm)
 
 // ***************product.html part************
 
