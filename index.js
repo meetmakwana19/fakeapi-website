@@ -86,10 +86,10 @@ navIcons.innerHTML = `
     <i class="bi bi-handbag"></i>
     <p>Bag</p>
 </div>
-<div class="d-flex flex-column text-center mx-4">
+<a class="d-flex flex-column text-center mx-4" href="dashboard.html">
     <i class="bi bi-person-bounding-box"></i>
-    <p>Admin</p>
-</div>
+    <p class="mb-0">Admin</p>
+</a>
 `
 
 // ************index.html part*******************
