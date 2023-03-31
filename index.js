@@ -240,8 +240,45 @@ h2.innerHTML = `Mytra Dashboard`
 
 const h4 = document.createElement("h4")
 h4.classList.add("float-end")
+h4.setAttribute("type", "button")
+h4.setAttribute("data-bs-toggle", "modal")
+h4.setAttribute("data-bs-target", "#post-modal")
 h4.innerHTML = `
 Add a product <i class="bi bi-plus-circle-fill"></i>`
+
+const modalDiv = document.createElement("div")
+modalDiv.classList.add("modal", "fade")
+modalDiv.setAttribute("id", "post-modal")
+modalDiv.setAttribute("tabindex", "-1")
+modalDiv.setAttribute("aria-labelledby", "exampleModalLabel")
+modalDiv.setAttribute("aria-hidden", "true")
+
+// const modalDialog = document.createElement("div")
+// modalDialog.classList.add("modal-dialog")
+
+// const modalContent = document.createElement("div")
+// modalContent.classList.add("modal-content")
+
+// const modalHeader = document.createElement("div")
+// modalHeader.classList.add("modal-header")
+
+modalDiv.innerHTML = `
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Add a Product</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    ...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save</button>
+  </div>
+</div>
+</div>
+`
 
 const table = document.createElement("table")
 table.classList.add("table", "table-hover", "table-borderless", "my-5")
@@ -264,19 +301,64 @@ table.appendChild(tbody)
 
 dashboardContainer.appendChild(h2)
 dashboardContainer.appendChild(h4)
+dashboardContainer.appendChild(modalDiv)
 dashboardContainer.appendChild(table)
 
+const modalDiv2 = document.createElement("div")
+modalDiv2.classList.add("modal", "fade")
+modalDiv2.setAttribute("id", "update-modal")
+modalDiv2.setAttribute("tabindex", "-1")
+modalDiv2.setAttribute("aria-labelledby", "exampleModalLabel")
+modalDiv2.setAttribute("aria-hidden", "true")
+
+modalDiv2.innerHTML = `
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Update the Product</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    ...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save</button>
+  </div>
+</div>
+</div>
+`
 
 function createTable(prod){
     console.log("gettiing here");
     const trBody = document.createElement("tr") 
-
+    
     trBody.innerHTML = `
     <th scope="row">${prod.id}</th>
     <td>${prod.title}</td>
     <td><img src="${prod.image}"></td>
-    <td><i class="bi bi-pencil-square"></i> | <i class="bi bi-trash3"></i> </td>
+    <td class="edit-icon"><i class="bi bi-pencil-square" type="button" data-bs-toggle="modal" data-bs-target="#update-modal"></i>
+    <!-- Modal -->
+<div class="modal fade" id="update-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit the Product</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> | <i class="bi bi-trash3"></i> </td>
     `
-
     return trBody;
 }
+
+const editIcon = document.querySelector(".edit-icon")
+editIcon.appendChild(modalDiv2)
