@@ -49,13 +49,12 @@ const productsDiv = document.querySelector("#products-grid")
 
 function createProducts(prod){
     const prodDiv = document.createElement("div")
-    prodDiv.classList.add("col-lg-3", "col-md-4", "col-sm-6", "product-div", "p-4", "text-center", "d-flex", "flex-column", "flex-wrap", "align-items-center", "justify-content-between", "border") //"flex-wrap", "align-items-center" are for the img to not distort while being in the center
+    prodDiv.classList.add("col-lg-3", "col-md-4", "col-sm-6", "product-div", "p-4", "text-center", "d-flex", "flex-column", "flex-wrap", "align-items-center", "justify-content-between") //"flex-wrap", "align-items-center" are for the img to not distort while being in the center
 
     prodDiv.innerHTML = `
     <img src="${prod.image}" width="auto" class="mb-4">
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
-    <p>${prod.id}</p>
     `
     // --------Redirecting to product page
     prodDiv.addEventListener("click", function(){
