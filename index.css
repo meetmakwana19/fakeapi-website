@@ -7,6 +7,9 @@
 .navbar > .container-fluid{
     padding: 0 8rem;
 }
+.navbar-brand > img{
+    height: 8vh;
+}
 
 /* carousel */
 .carousel-control-next,
