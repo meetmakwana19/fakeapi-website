@@ -327,7 +327,7 @@ function createTable(prod) {
     <th scope="row">${prod.id}</th>
     <td>${prod.title}</td>
     <td><img src="${prod.image}"></td>
-    <td class="edit-icon"><i class="bi bi-pencil-square" type="button" data-bs-toggle="modal" data-bs-target="#update-modal"></i>
+    <td class="edit-icon"><i class="bi bi-pencil-square" type="button" data-bs-toggle="modal" data-bs-target="#update-modal" onclick = "setEditId(${prod.id})"></i>
 
     <!-- Modal -->
     <div class="modal fade" id="update-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -339,14 +339,14 @@ function createTable(prod) {
           aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="updateForm">
           <div class="form mb-3">
             <label class="form-label">Data object in JSON form</label>
-            <textarea class="form-control" id="data" style="height: 100px"></textarea>
+            <textarea class="form-control" id="updated-data" style="height: 100px"></textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-primary" onclick="updateProduct(event)">Update</button>
           </div>
         </form>
       </div>
@@ -417,9 +417,67 @@ function addProduct() {
 // }, 3000);
 
 
+// **************Update product using PUT
+function setEditId(idx){
+  localStorage.setItem("id_for_update", idx)
+}
+function updateProduct(event){
+  // has saved the id of the product as the id of the trash icon while populating the table data.
+  const idx = localStorage.getItem("id_for_update");
+  console.log("idx is-- ", idx);
+  const updatePayload = document.getElementById("updated-data").value;
+  const payload = { updatePayload }
+
+  const updateReq = new XMLHttpRequest()
+  updateReq.open("PUT", `https://fakestoreapi.com/products/${idx}`)
+  updateReq.setRequestHeader("Content-Type", "application/json")
+
+  updateReq.onreadystatechange = function(){
+    if(updateReq.readyState === XMLHttpRequest.DONE){
+      if(updateReq.status === 200){
+        const response = JSON.parse(updateReq.responseText);
+
+        // -----Alert
+        const alertPlaceholder = document.getElementById(
+          "liveAlertPlaceholder"
+        );
+
+        const alert = (message, type) => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            "</div>",
+          ].join("");
+
+          alertPlaceholder.append(wrapper);
+        };
+
+        alert(`Success <strong>${updateReq.status}</strong> ! Updated Product. ID: ${response.id}`, "success");
+
+        // Reset form and close modal
+        document.getElementById("updateForm").reset();
+        $("#update-modal").modal("hide");
+
+        // ---------remove the alert after some time
+        var alertElement = document.querySelector(".alert");
+        // delay the execution of the function that will hide the alert by 3 seconds
+        setTimeout(function () {
+          alertElement.remove();
+        }, 3000);
+      }
+      else{
+        console.error(updateReq.statusText)
+      }
+    }
+  }
+  updateReq.send(JSON.stringify(payload))
+}
+
+
 // **************DELETE product
 function deleteProduct(event){
-  console.log("deleting");
 
   // has saved the id of the product as the id of the trash icon while populating the table data.
   const idx = event.target.id;
