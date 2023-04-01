@@ -287,7 +287,8 @@ modalDiv.innerHTML = `
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="addProduct()">Save</button>
+
+          <button type="button" class="btn btn-primary" id="liveAlertBtn" onclick="addProduct()">Save</button>
         </div>
       </form>
     </div>
@@ -318,6 +319,7 @@ dashboardContainer.appendChild(h4);
 dashboardContainer.appendChild(modalDiv);
 dashboardContainer.appendChild(table);
 
+// this also has update modal as td elements has edit icon
 function createTable(prod) {
   const trBody = document.createElement("tr");
 
@@ -365,16 +367,42 @@ function addProduct() {
   const postProduct = new XMLHttpRequest();
   postProduct.open("POST", "https://fakestoreapi.com/products");
   postProduct.setRequestHeader("Content-Type", "application/json");
+
   postProduct.onreadystatechange = function () {
     if (postProduct.readyState === XMLHttpRequest.DONE) {
       if (postProduct.status === 200) {
-        // console.log(postProduct.responseText); // Display API response in console
+        // console.log("onClick success. Posting product : ",postProduct.responseText); // Display API response in console
         const response = JSON.parse(postProduct.responseText);
-        alert(`Product added successfully!\nID: ${response.id}`);
-  
+
+        // -----Alert
+        const alertPlaceholder = document.getElementById(
+          "liveAlertPlaceholder"
+        );
+
+        const alert = (message, type) => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            "</div>",
+          ].join("");
+
+          alertPlaceholder.append(wrapper);
+        };
+
+        alert(`Success <strong>${postProduct.status}</strong> ! Added Product. ID: ${response.id}`, "success");
+
         // Reset form and close modal
         document.getElementById("productForm").reset();
         $("#post-modal").modal("hide");
+
+        // ---------remove the alert after some time
+        var alertElement = document.querySelector(".alert");
+        // delay the execution of the function that will hide the alert by 3 seconds
+        setTimeout(function () {
+          alertElement.remove();
+        }, 3000);
       } else {
         console.error(postProduct.statusText);
       }
