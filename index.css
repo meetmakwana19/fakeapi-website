@@ -135,6 +135,16 @@ td > .bi {
     background-color: white;
 }
 
+/* ********alert */
+.alert{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    z-index: 999;
+    /* centers the element both horizontally and vertically by moving it up and left by 50% of its width and height, */
+    transform: translate(-50%, -50%); 
+}
+
 /* ************FOOTER************** */
 footer{
     background-color: #fafbfc;

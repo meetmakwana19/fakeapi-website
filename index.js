@@ -352,7 +352,7 @@ function createTable(prod) {
       </div>
     </div>
     </div>
-    </div> | <i class="bi bi-trash3"></i> </td>
+    </div> | <i class="bi bi-trash3" onclick="deleteProduct(event)" id="${prod.id}"></i> </td>
     `;
   return trBody;
 }
@@ -382,7 +382,7 @@ function addProduct() {
         const alert = (message, type) => {
           const wrapper = document.createElement("div");
           wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center" role="alert">`,
+            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
             `   <div>${message}</div>`,
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             "</div>",
@@ -409,4 +409,57 @@ function addProduct() {
     }
   };
   postProduct.send(JSON.stringify(payload));
+}
+// even if there exists any multiple alerts which were added by multiple button clicks then handling their deletion here
+// var alertElement = document.querySelector(".alert");
+// setTimeout(function () {
+//   alertElement.remove();
+// }, 3000);
+
+
+// **************DELETE product
+function deleteProduct(event){
+  console.log("deleting");
+
+  // has saved the id of the product as the id of the trash icon while populating the table data.
+  const idx = event.target.id;
+  const deleteReq = new XMLHttpRequest();
+  deleteReq.open("DELETE", `https://fakestoreapi.com/products/${idx}`)
+
+  deleteReq.onreadystatechange = function(){
+    if(deleteReq.readyState === XMLHttpRequest.DONE){
+      if(deleteReq.status === 200){
+        const response = JSON.parse(deleteReq.responseText);
+
+        // -----Alert
+        const alertPlaceholder = document.getElementById(
+          "liveAlertPlaceholder"
+        );
+
+        const alert = (message, type) => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            "</div>",
+          ].join("");
+
+          alertPlaceholder.append(wrapper);
+        };
+
+        alert(`Success <strong>${deleteReq.status}</strong> ! Deleted Product. ID: ${response.id}`, "success");
+
+        // ---------remove the alert after some time
+        var alertElement = document.querySelector(".alert");
+        // delay the execution of the function that will hide the alert by 3 seconds
+        setTimeout(function () {
+          alertElement.remove();
+        }, 3000);
+      }else{
+        console.error(deleteReq.statusText)
+      }
+    }
+  }
+  deleteReq.send();
 }
