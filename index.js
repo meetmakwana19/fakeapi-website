@@ -103,7 +103,7 @@ const productsDiv = document.querySelector("#products-grid");
 const dashboardContainer = document.querySelector("#dashboard-container");
 
 if (productsDiv || dashboardContainer) {
-  // XMLHttpRequest() is a constructor directly and not a class in JS
+  // XMLHttpRequest() is a constructor directly and not a class in JS 
   // The constructor initializes an XMLHttpRequest. It must be called before any other method calls.
   const getAllProdsReq = new XMLHttpRequest();
 
@@ -118,8 +118,8 @@ if (productsDiv || dashboardContainer) {
 
         productsArray.map(function (prod) {
           // if condition because using the same JS file for other html page too which doesnt need this function
-          if (productsDiv) {
-            productsDiv.appendChild(createProducts(prod));
+          if (allProdDiv) {
+            allProdDiv.appendChild(createProducts(prod));
           }
           if (tbody) {
             tbody.appendChild(createTable(prod));
@@ -135,6 +135,10 @@ if (productsDiv || dashboardContainer) {
   getAllProdsReq.send();
 }
 // ---------------- Populating all products on index.html
+
+const allProdDiv = document.createElement("div");
+allProdDiv.setAttribute("id", "allProdDiv");
+allProdDiv.classList.add("row", "g-4")
 
 function createProducts(prod) {
   const prodDiv = document.createElement("div");
@@ -167,6 +171,9 @@ function createProducts(prod) {
     window.location.href = "product.html";
   });
   return prodDiv;
+}
+if(allProdDiv){
+  productsDiv.appendChild(allProdDiv)
 }
 
 // ***************product.html part************
@@ -574,4 +581,50 @@ function catProducts(category) {
   // }, 1000);
   // event.preventDefault();  
   // return false;
+}
+
+// ---------------Limit 5 products
+
+
+function limitProd(){
+  console.log("yess");
+  
+  // removing the div with has all products
+  // allProdDiv.remove()
+  if(allProdDiv){
+    allProdDiv.parentNode.removeChild(allProdDiv)
+  }
+  
+  const limitedProdDiv = document.createElement("div");
+  limitedProdDiv.setAttribute("id", "limitedProdDiv");
+  limitedProdDiv.classList.add("row", "g-4")
+  
+  const getLimitedProdReq = new XMLHttpRequest()
+  
+  console.log("yess 2");
+  getLimitedProdReq.onreadystatechange = function(){
+    if(getLimitedProdReq.readyState === XMLHttpRequest.DONE){
+      console.log("trying 1");
+      if(getLimitedProdReq.status === 200){
+        const productsArray = JSON.parse(getLimitedProdReq.responseText)
+        console.log("api : ", getLimitedProdReq.responseText);
+        productsArray.map(function(prod){
+          if(limitedProdDiv){
+            limitedProdDiv.appendChild(createProducts(prod))
+          }
+        })
+      }
+      else{
+        alert("Some error occured.")
+      }
+    }
+  }
+  console.log("trying 2");
+  getLimitedProdReq.open("GET", "https://fakestoreapi.com/products?limit=5")
+  getLimitedProdReq.send()
+  console.log("trying 3");
+
+  if(limitedProdDiv){
+    productsDiv.appendChild(limitedProdDiv)
+  }
 }
