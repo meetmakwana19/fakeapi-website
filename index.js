@@ -40,15 +40,16 @@ const navCollapseDiv = document.querySelector(".collapse");
 const navUlEl = document.createElement("ul");
 navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0");
 
+let category_product_url = "https://fakestoreapi.com/products/category/";
+
 function createNavItems(cats) {
   const liEl = document.createElement("li");
   liEl.classList.add("nav-item");
 
+  const new_link = category_product_url + cats;
+  // console.log("saving", cats);
   liEl.innerHTML = `
-    <a class="nav-link active" aria-current="page" href="#">${
-      cats.charAt(0).toUpperCase() + cats.slice(1)
-    }</a>
-    `;
+    <a class="nav-link active" onClick="catProducts(${cats}) " aria-current="page" href="products_category.html" id="${new_link}">${cats.charAt(0).toUpperCase() + cats.slice(1)}</a>`;
 
   navUlEl.appendChild(liEl);
   return navUlEl;
@@ -98,39 +99,42 @@ navIcons.innerHTML = `
 
 // ----------------- GET all products part :
 
-// XMLHttpRequest() is a constructor directly and not a class in JS
-// The constructor initializes an XMLHttpRequest. It must be called before any other method calls.
-const getAllProdsReq = new XMLHttpRequest();
-
-// function() is a handler and not callback
-getAllProdsReq.onreadystatechange = function () {
-  if (getAllProdsReq.readyState === XMLHttpRequest.DONE) {
-    if (getAllProdsReq.status === 200) {
-      // console.log("API Response: ", JSON.parse(getAllProdsReq.responseText));
-
-      // parsing the responseText which is in string means string to JSON
-      const productsArray = JSON.parse(getAllProdsReq.responseText);
-
-      productsArray.map(function (prod) {
-        // if condition because using the same JS file for other html page too which doesnt need this function
-        if (productsDiv) {
-          productsDiv.appendChild(createProducts(prod));
-        }
-        if (tbody) {
-          tbody.appendChild(createTable(prod));
-        }
-      });
-    } else {
-      alert("Some error occured.");
-    }
-  }
-};
-
-getAllProdsReq.open("GET", "https://fakestoreapi.com/products");
-getAllProdsReq.send();
-
-// ---------------- Populating all products on index.html
 const productsDiv = document.querySelector("#products-grid");
+const dashboardContainer = document.querySelector("#dashboard-container");
+
+if (productsDiv || dashboardContainer) {
+  // XMLHttpRequest() is a constructor directly and not a class in JS
+  // The constructor initializes an XMLHttpRequest. It must be called before any other method calls.
+  const getAllProdsReq = new XMLHttpRequest();
+
+  // function() is a handler and not callback
+  getAllProdsReq.onreadystatechange = function () {
+    if (getAllProdsReq.readyState === XMLHttpRequest.DONE) {
+      if (getAllProdsReq.status === 200) {
+        console.log("API Response: ", JSON.parse(getAllProdsReq.responseText));
+
+        // parsing the responseText which is in string means string to JSON
+        const productsArray = JSON.parse(getAllProdsReq.responseText);
+
+        productsArray.map(function (prod) {
+          // if condition because using the same JS file for other html page too which doesnt need this function
+          if (productsDiv) {
+            productsDiv.appendChild(createProducts(prod));
+          }
+          if (tbody) {
+            tbody.appendChild(createTable(prod));
+          }
+        });
+      } else {
+        alert("Some error occured.");
+      }
+    }
+  };
+
+  getAllProdsReq.open("GET", "https://fakestoreapi.com/products");
+  getAllProdsReq.send();
+}
+// ---------------- Populating all products on index.html
 
 function createProducts(prod) {
   const prodDiv = document.createElement("div");
@@ -219,8 +223,7 @@ function createInfo(prod) {
   const bulletList = `<ul>${listItems.join("")}</ul>`;
 
   infoPage.innerHTML = `
-    <strong class="mb-4">> ${
-      prod.category.charAt(0).toUpperCase() + prod.category.slice(1)
+    <strong class="mb-4">> ${prod.category.charAt(0).toUpperCase() + prod.category.slice(1)
     }</strong>
 
     <div class="col-lg-6 text-center p-5">
@@ -230,9 +233,8 @@ function createInfo(prod) {
     <div class="col-lg-6 p-5">
         <h3>${prod.title}</h3>
         <div class="rating d-flex border justify-content-evenly">
-            <div id="rating-div">${
-              prod.rating.rate
-            } <i class="bi bi-star-fill"></i></div>
+            <div id="rating-div">${prod.rating.rate
+    } <i class="bi bi-star-fill"></i></div>
             <span>|</span>
             <div id="rating-count">
                 ${prod.rating.count} Ratings
@@ -251,7 +253,7 @@ function createInfo(prod) {
 
 // ***************dashboard.html part************
 
-const dashboardContainer = document.querySelector("#dashboard-container");
+// const dashboardContainer = document.querySelector("#dashboard-container");
 
 const h2 = document.createElement("h2");
 h2.innerHTML = `Mytra Dashboard <hr/>`;
@@ -314,10 +316,12 @@ thead.appendChild(tr);
 table.appendChild(thead);
 table.appendChild(tbody);
 
-dashboardContainer.appendChild(h2);
-dashboardContainer.appendChild(h4);
-dashboardContainer.appendChild(modalDiv);
-dashboardContainer.appendChild(table);
+if (dashboardContainer) {
+  dashboardContainer.appendChild(h2);
+  dashboardContainer.appendChild(h4);
+  dashboardContainer.appendChild(modalDiv);
+  dashboardContainer.appendChild(table);
+}
 
 // this also has update modal as td elements has edit icon
 function createTable(prod) {
@@ -391,7 +395,10 @@ function addProduct() {
           alertPlaceholder.append(wrapper);
         };
 
-        alert(`Success <strong>${postProduct.status}</strong> ! Added Product. ID: ${response.id}`, "success");
+        alert(
+          `Success <strong>${postProduct.status}</strong> ! Added Product. ID: ${response.id}`,
+          "success"
+        );
 
         // Reset form and close modal
         document.getElementById("productForm").reset();
@@ -416,25 +423,24 @@ function addProduct() {
 //   alertElement.remove();
 // }, 3000);
 
-
 // **************Update product using PUT
-function setEditId(idx){
-  localStorage.setItem("id_for_update", idx)
+function setEditId(idx) {
+  localStorage.setItem("id_for_update", idx);
 }
-function updateProduct(event){
+function updateProduct(event) {
   // has saved the id of the product as the id of the trash icon while populating the table data.
   const idx = localStorage.getItem("id_for_update");
   console.log("idx is-- ", idx);
   const updatePayload = document.getElementById("updated-data").value;
-  const payload = { updatePayload }
+  const payload = { updatePayload };
 
-  const updateReq = new XMLHttpRequest()
-  updateReq.open("PUT", `https://fakestoreapi.com/products/${idx}`)
-  updateReq.setRequestHeader("Content-Type", "application/json")
+  const updateReq = new XMLHttpRequest();
+  updateReq.open("PUT", `https://fakestoreapi.com/products/${idx}`);
+  updateReq.setRequestHeader("Content-Type", "application/json");
 
-  updateReq.onreadystatechange = function(){
-    if(updateReq.readyState === XMLHttpRequest.DONE){
-      if(updateReq.status === 200){
+  updateReq.onreadystatechange = function () {
+    if (updateReq.readyState === XMLHttpRequest.DONE) {
+      if (updateReq.status === 200) {
         const response = JSON.parse(updateReq.responseText);
 
         // -----Alert
@@ -454,7 +460,10 @@ function updateProduct(event){
           alertPlaceholder.append(wrapper);
         };
 
-        alert(`Success <strong>${updateReq.status}</strong> ! Updated Product. ID: ${response.id}`, "success");
+        alert(
+          `Success <strong>${updateReq.status}</strong> ! Updated Product. ID: ${response.id}`,
+          "success"
+        );
 
         // Reset form and close modal
         document.getElementById("updateForm").reset();
@@ -466,27 +475,24 @@ function updateProduct(event){
         setTimeout(function () {
           alertElement.remove();
         }, 3000);
-      }
-      else{
-        console.error(updateReq.statusText)
+      } else {
+        console.error(updateReq.statusText);
       }
     }
-  }
-  updateReq.send(JSON.stringify(payload))
+  };
+  updateReq.send(JSON.stringify(payload));
 }
 
-
 // **************DELETE product
-function deleteProduct(event){
-
+function deleteProduct(event) {
   // has saved the id of the product as the id of the trash icon while populating the table data.
   const idx = event.target.id;
   const deleteReq = new XMLHttpRequest();
-  deleteReq.open("DELETE", `https://fakestoreapi.com/products/${idx}`)
+  deleteReq.open("DELETE", `https://fakestoreapi.com/products/${idx}`);
 
-  deleteReq.onreadystatechange = function(){
-    if(deleteReq.readyState === XMLHttpRequest.DONE){
-      if(deleteReq.status === 200){
+  deleteReq.onreadystatechange = function () {
+    if (deleteReq.readyState === XMLHttpRequest.DONE) {
+      if (deleteReq.status === 200) {
         const response = JSON.parse(deleteReq.responseText);
 
         // -----Alert
@@ -506,7 +512,10 @@ function deleteProduct(event){
           alertPlaceholder.append(wrapper);
         };
 
-        alert(`Success <strong>${deleteReq.status}</strong> ! Deleted Product. ID: ${response.id}`, "success");
+        alert(
+          `Success <strong>${deleteReq.status}</strong> ! Deleted Product. ID: ${response.id}`,
+          "success"
+        );
 
         // ---------remove the alert after some time
         var alertElement = document.querySelector(".alert");
@@ -514,10 +523,55 @@ function deleteProduct(event){
         setTimeout(function () {
           alertElement.remove();
         }, 3000);
-      }else{
-        console.error(deleteReq.statusText)
+      } else {
+        console.error(deleteReq.statusText);
       }
     }
-  }
+  };
   deleteReq.send();
+}
+
+// ------------------products_dashboard.html
+
+const catProdDiv = document.querySelector("#cat-products");
+
+if (catProdDiv) {
+  console.log("yes getting");
+  const catProdReq = new XMLHttpRequest();
+
+  catProdReq.onreadystatechange = function () {
+    if (catProdReq.readyState === XMLHttpRequest.DONE) {
+      if (catProdReq.status === 200) {
+        const productsArray = JSON.parse(catProdReq.responseText);
+        console.log("array is >>>>>..", productsArray);
+
+        productsArray.map(function (prod) {
+          // if condition because using the same JS file for other html page too which doesnt need this function
+          if (productsDiv) {
+            // productsDiv.appendChild(createProducts(prod));
+          }
+          if (tbody) {
+            tbody.appendChild(createTable(prod));
+          }
+        });
+      } else {
+        alert("Fetching category's products is yet to be configured.");
+      }
+    }
+  };
+  
+  catProdReq.open("GET", localStorage.getItem("cat_link"));
+  catProdReq.send();
+}
+
+function catProducts(category) {
+  console.log("category is here ", category);
+  localStorage.setItem("cat_link", category);
+  window.location.href = "products_category.html";
+  // const element = document.getElementById(`#${link}`);
+  // localStorage.setItem("cat_link", element.id);
+  // setTimeout(() => {
+  // }, 1000);
+  // event.preventDefault();  
+  // return false;
 }
