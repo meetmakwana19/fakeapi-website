@@ -682,3 +682,56 @@ function limitProd(n){
 
 function removeActive(){
 }
+
+// -----------------footer
+
+const footer = document.getElementById("footer")
+
+const footer_row = document.createElement("div")
+footer_row.classList.add("row", "mt-5", "mx-auto")
+footer_row.innerHTML = `
+<div class="col-lg-3">
+<strong><p>ONLINE SHOPPING</p></strong>
+<p>Electronics</p>
+<p>Jewelery</p>
+<p>Men's clothing</p>
+<p>Women's clothing</p>
+</div>
+<div class="col-lg-3 original">
+<strong>100% ORIGINAL</strong>
+<span>
+  guarantee for all products at myntra.com
+</span> 
+</div>
+<div class="col-lg-3">
+<strong><p>Tech Stack</p></strong>
+<p>Javascript DOM</p>
+<p>HTML</p>
+<p>CSS</p>
+<p>Bootstrap</p>
+</div>
+<div class="col-lg-3 routes">
+<strong><p>ROUTES</p></strong>
+<ul class="p-0">
+  <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products/1</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products/categories</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products?limit=5</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-success">POST</span> /products</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-warning">PUT</span> /products/1</li>
+  <li><input checked="" disabled="" type="checkbox"><span class="text-danger">DELETE</span> /products/1</li>
+</ul>
+</div>
+
+`
+footer.appendChild(footer_row);
+
+const bottom_footer = document.createElement("div")
+bottom_footer.classList.add("p-4", "footer-bottom")
+bottom_footer.innerHTML = `
+<div class="container text-center">
+<p class="m-0">© 2023 www.mytra.com. All rights reserved.</p>
+</div>
+`
+
+footer.appendChild(bottom_footer)
