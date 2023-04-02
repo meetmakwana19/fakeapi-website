@@ -586,14 +586,25 @@ function catProducts(category) {
 // ---------------Limit 5 products
 
 
-function limitProd(){
-  console.log("yess");
-  
+function limitProd(n){  
   // removing the div with has all products
   // allProdDiv.remove()
-  if(allProdDiv){
-    allProdDiv.parentNode.removeChild(allProdDiv)
+  const allProdDiv1 = document.querySelector("#allProdDiv")
+  if(allProdDiv1){
+    allProdDiv1.parentNode.removeChild(allProdDiv1)
   }
+  // to remove the div of products which could have been populated by previous limit request
+  const limitedProdDiv1 = document.querySelector("#limitedProdDiv")
+  if(limitedProdDiv1){
+    limitedProdDiv1.remove()
+  }
+  // to reset the active button when a button is clicked so that the other can get active at the end
+  const element = document.querySelectorAll(`.dropdown-item`)
+  element.forEach((ele)=>{
+    if(ele.classList.contains("active")){
+      ele.classList.remove("active")
+    }
+  })
   
   const limitedProdDiv = document.createElement("div");
   limitedProdDiv.setAttribute("id", "limitedProdDiv");
@@ -601,13 +612,10 @@ function limitProd(){
   
   const getLimitedProdReq = new XMLHttpRequest()
   
-  console.log("yess 2");
   getLimitedProdReq.onreadystatechange = function(){
     if(getLimitedProdReq.readyState === XMLHttpRequest.DONE){
-      console.log("trying 1");
       if(getLimitedProdReq.status === 200){
         const productsArray = JSON.parse(getLimitedProdReq.responseText)
-        console.log("api : ", getLimitedProdReq.responseText);
         productsArray.map(function(prod){
           if(limitedProdDiv){
             limitedProdDiv.appendChild(createProducts(prod))
@@ -619,12 +627,26 @@ function limitProd(){
       }
     }
   }
-  console.log("trying 2");
-  getLimitedProdReq.open("GET", "https://fakestoreapi.com/products?limit=5")
+  getLimitedProdReq.open("GET", `https://fakestoreapi.com/products?limit=${n}`)
   getLimitedProdReq.send()
-  console.log("trying 3");
 
   if(limitedProdDiv){
     productsDiv.appendChild(limitedProdDiv)
   }
+
+  let nclass
+  if(n === 5){
+    nclass = "five"
+  }
+  if(n === 10){
+    nclass = "ten"
+  }
+  if(n === 15){
+    nclass = "fifteen"
+  }
+  const ele = document.querySelector(`.${nclass}`)
+  ele.classList.add("active");
+}
+
+function removeActive(){
 }
