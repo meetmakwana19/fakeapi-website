@@ -99,7 +99,42 @@ navIcons.innerHTML = `
 
 // ----------------- GET all products part :
 
-const productsDiv = document.querySelector("#products-grid");
+const mainProductsDiv = document.getElementById("products")
+
+const mainH1 = document.createElement("h1")
+mainH1.classList.add("prod-h", "d-flex", "justify-content-between")
+mainH1.innerHTML = `
+Best Buys
+          <div class="dropdown ">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Limit by
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li onclick="limitProd(5)"><div class="dropdown-item five">5</div></li>
+              <li onclick="limitProd(10)"><div class="dropdown-item ten">10</div></li>
+              <li onclick="limitProd(15)"><div class="dropdown-item fifteen">15</div></li>
+              <li><hr class="dropdown-divider"></li>
+              <li onclick=""><a href="index.html" class="dropdown-item all active">All</a></li>
+
+            </ul>
+          </div>`
+
+// if condition to prevent errors on other HTML pages which tries to appendChild
+if(mainProductsDiv){
+  mainProductsDiv.appendChild(mainH1)
+  
+}
+
+
+// const productsDiv = document.querySelector("#products-grid");
+const productsDiv = document.createElement("div");
+productsDiv.setAttribute("id", "products-grid")
+
+// if condition to prevent errors on other HTML pages which tries to appendChild
+if(mainProductsDiv){
+  mainProductsDiv.appendChild(productsDiv)
+}
+
 const dashboardContainer = document.querySelector("#dashboard-container");
 
 if (productsDiv || dashboardContainer) {
@@ -538,7 +573,7 @@ function deleteProduct(event) {
   deleteReq.send();
 }
 
-// ------------------products_dashboard.html
+// ------------------products_category.html
 
 const catProdDiv = document.querySelector("#cat-products");
 
@@ -556,9 +591,6 @@ if (catProdDiv) {
           // if condition because using the same JS file for other html page too which doesnt need this function
           if (productsDiv) {
             // productsDiv.appendChild(createProducts(prod));
-          }
-          if (tbody) {
-            tbody.appendChild(createTable(prod));
           }
         });
       } else {
