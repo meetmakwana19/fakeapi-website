@@ -150,6 +150,21 @@ td > .bi {
 
 /* ************FOOTER************** */
 footer{
-    background-color: #fafbfc;
-    height: 30vh;
+    background-color: #fafbfc!important;
+    height: 35vh;
+}
+.col-lg-3, .original{
+    width: 22%!important;
+}
+.routes{
+    width: 25%!important;
+}
+ul {
+    list-style: none;
+}
+li > input{
+    margin-right: 1rem;
+}
+.footer-bottom{
+    background-color: #fafbfc!important;
 }
