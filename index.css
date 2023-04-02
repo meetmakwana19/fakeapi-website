@@ -39,6 +39,9 @@
 }
 
 /* main content */
+.dropdown-menu > li:hover{
+    cursor: pointer;
+}
 .prod-h{
     padding: 1rem 8rem;
 }
