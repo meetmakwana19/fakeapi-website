@@ -680,8 +680,26 @@ function limitProd(n){
   ele.classList.add("active");
 }
 
-function removeActive(){
+// -----------------User 
+const allUsersReq = new XMLHttpRequest();
+
+allUsersReq.onreadystatechange = function(){
+  if(allUsersReq.readyState === XMLHttpRequest.DONE){
+    if (allUsersReq.status === 200){
+      const usersArray = JSON.parse(allUsersReq.responseText)
+      console.log("response is ", usersArray);
+      usersArray.forEach(item => {
+        console.log("user is ", item.username);
+        console.log("pass is ", item.password);
+      })
+    }
+    else{
+      alert("Some error occured.")
+    }
+  }
 }
+allUsersReq.open("GET", "https://fakestoreapi.com/users")
+allUsersReq.send()
 
 // -----------------footer
 
@@ -714,11 +732,17 @@ footer_row.innerHTML = `
 <strong><p>ROUTES</p></strong>
 <ul class="p-0">
   <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products</li>
+
   <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products/1</li>
+
   <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products/categories</li>
+
   <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products?limit=5</li>
+
   <li><input checked="" disabled="" type="checkbox"><span class="text-success">POST</span> /products</li>
+  
   <li><input checked="" disabled="" type="checkbox"><span class="text-warning">PUT</span> /products/1</li>
+  
   <li><input checked="" disabled="" type="checkbox"><span class="text-danger">DELETE</span> /products/1</li>
 </ul>
 </div>
