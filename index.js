@@ -74,10 +74,42 @@ const popoverList = [...popoverTriggerList].map(
   (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
 );
 
+const loginModal = document.createElement("div")
+loginModal.classList.add("modal", "fade")
+loginModal.setAttribute("id", "login-modal");
+loginModal.setAttribute("tabindex", "-1");
+loginModal.setAttribute("aria-labelledby", "exampleModalLabel");
+loginModal.setAttribute("aria-hidden", "true");
+loginModal.innerHTML = `
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="loginModalLabel">User Sign in</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="username">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="current-password">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`
 const navIcons = document.createElement("div");
 navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
-<div class="d-flex flex-column text-center mx-4">
+<div class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
     <i class="bi bi-person"></i>
     <p>Profile</p>
 </div>
@@ -94,6 +126,13 @@ navIcons.innerHTML = `
     <p class="mb-0">Admin</p>
 </a>
 `;
+
+// *very imp :
+// append modal container to the body tag directly so that it doesnt interfere with other elements. 
+// appending modal to any element which has fixed/relative position will cause back-drop of whole page
+const body = document.body
+body.appendChild(loginModal);
+
 
 // ************index.html part*******************
 
@@ -701,6 +740,9 @@ allUsersReq.onreadystatechange = function(){
 allUsersReq.open("GET", "https://fakestoreapi.com/users")
 allUsersReq.send()
 
+function login(){
+  console.log("getting");
+}
 // -----------------footer
 
 const footer = document.getElementById("footer")

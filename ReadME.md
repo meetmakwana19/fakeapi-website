@@ -25,3 +25,7 @@ alert("hello")
 
 location.href = "https://meetmakwana.netlify.app"
 ```
+
+##### Lessons learnt 
+
+1. Append modal container to the body tag directly so that it doesnt interfere with other elements. Appending modal to any element which has fixed/relative position will cause back-drop of whole page https://stackoverflow.com/a/11788713/17796286
