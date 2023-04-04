@@ -777,12 +777,12 @@ loginForm.addEventListener("submit", function(event){
         };
 
         alert(
-          `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token}`,
+          `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token.substring(0, 15)}.....${response.token.substring(response.token.length - 5, response.token.length)}`,
           "success"
         );
 
         // Reset form and close modal
-        const loginform = document.querySelector("loginForm")
+        const loginform = document.querySelector(".loginForm")
         if(loginform){
           loginform.reset()
         }
