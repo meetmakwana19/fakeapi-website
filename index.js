@@ -843,6 +843,8 @@ footer_row.innerHTML = `
   <li><input checked="" disabled="" type="checkbox"><span class="text-primary ">GET</span> /products?limit=5</li>
 
   <li><input checked="" disabled="" type="checkbox"><span class="text-success">POST</span> /products</li>
+
+  <li><input checked="" disabled="" type="checkbox"><span class="text-success">POST</span> /auth/login</li>
   
   <li><input checked="" disabled="" type="checkbox"><span class="text-warning">PUT</span> /products/1</li>
   
