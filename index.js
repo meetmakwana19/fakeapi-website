@@ -28,9 +28,13 @@ navbar.innerHTML = `
 </div>
 `
 const body = document.body
-// body.appendChild(navbar)
+// adding navbar as the first child of the body to make navbar on the top of body
 body.insertBefore(navbar, body.firstChild)
 
+const alertDiv = document.createElement("div")
+alertDiv.setAttribute("id", "liveAlertPlaceholder")
+//  Add the child element as the second child of the parent element
+body.insertBefore(alertDiv, body.childNodes[1])
 // -------- Nav items
 // -------- GET all categories :
 
@@ -619,7 +623,14 @@ if (catProdDiv) {
           }
         });
       } else {
-        alert("Fetching category's products is yet to be configured.");
+        alert("Fetching category's products is yet to be configured.", "info");
+
+        // ---------remove the alert after some time
+        var alertElement = document.querySelector(".alert");
+        // delay the execution of the function that will hide the alert by 3 seconds
+        setTimeout(function () {
+          alertElement.remove();
+        }, 3000);
       }
     }
   };
