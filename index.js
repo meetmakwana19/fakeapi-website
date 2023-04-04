@@ -10,6 +10,27 @@ let product_id;
 
 // *****************Navbar********************
 
+const navbar = document.createElement("nav")
+navbar.classList.add("navbar", "navbar-expand-lg", "bg-body-tertiary", "sticky-top")
+navbar.innerHTML = `
+<div class="container-fluid">
+<a class="navbar-brand" href="index.html">
+  <img src="./public/myntra.png" alt="logo">
+  Mytra</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+  data-bs-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent" aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse mx-5" id="navbarSupportedContent">
+</div>
+</div>
+`
+const body = document.body
+// body.appendChild(navbar)
+body.insertBefore(navbar, body.firstChild)
+
 // -------- Nav items
 // -------- GET all categories :
 
@@ -109,7 +130,6 @@ loginModal.innerHTML = `
 // *very imp :
 // append modal container to the body tag directly so that it doesnt interfere with other elements. 
 // appending modal to any element which has fixed/relative position will cause back-drop of whole page
-const body = document.body
 body.appendChild(loginModal);
 
 const navIcons = document.createElement("div");
