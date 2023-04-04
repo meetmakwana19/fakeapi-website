@@ -88,14 +88,14 @@ loginModal.innerHTML = `
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-      <form>
+      <form class="loginForm">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="username">
+          <label for="exampleInputusername1" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" autocomplete="username">
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="current-password">
+          <input type="password" class="form-control" id="password" autocomplete="current-password">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -106,6 +106,12 @@ loginModal.innerHTML = `
   </div>
 </div>
 `
+// *very imp :
+// append modal container to the body tag directly so that it doesnt interfere with other elements. 
+// appending modal to any element which has fixed/relative position will cause back-drop of whole page
+const body = document.body
+body.appendChild(loginModal);
+
 const navIcons = document.createElement("div");
 navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
@@ -126,12 +132,6 @@ navIcons.innerHTML = `
     <p class="mb-0">Admin</p>
 </a>
 `;
-
-// *very imp :
-// append modal container to the body tag directly so that it doesnt interfere with other elements. 
-// appending modal to any element which has fixed/relative position will cause back-drop of whole page
-const body = document.body
-body.appendChild(loginModal);
 
 
 // ************index.html part*******************
@@ -743,6 +743,71 @@ allUsersReq.send()
 function login(){
   console.log("getting");
 }
+
+const loginForm = document.querySelector(".loginForm")
+loginForm.addEventListener("submit", function(event){
+  event.preventDefault();
+
+  var username = document.getElementById("username").value;
+  var password = document.getElementById("password").value;
+
+  const loginnReq = new XMLHttpRequest();
+  loginnReq.open("POST", "https://fakestoreapi.com/auth/login");
+  loginnReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  loginnReq.onload = function(){
+    // -----Alert
+    const alertPlaceholder = document.getElementById(
+      "liveAlertPlaceholder"
+    );
+    if(loginnReq.status === 200){
+      const response = JSON.parse(loginnReq.responseText)
+      console.log("Logged in : ", response);
+
+
+        const alert = (message, type) => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            "</div>",
+          ].join("");
+
+          alertPlaceholder.append(wrapper);
+        };
+
+        alert(
+          `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token}`,
+          "success"
+        );
+
+        // Reset form and close modal
+        const loginform = document.querySelector("loginForm")
+        if(loginform){
+          loginform.reset()
+        }
+        $("#login-modal").modal("hide");
+
+        // ---------remove the alert after some time
+        var alertElement = document.querySelector(".alert");
+        // delay the execution of the function that will hide the alert by 3 seconds
+        setTimeout(function () {
+          alertElement.remove();
+        }, 3000);
+    }
+    else{
+      console.log("Request failed. Status: " + loginnReq.status);
+    }
+  }
+  loginnReq.onerror = function(){
+    console.log("Response failed. Status: "+loginnReq.status);
+  }
+  var data = JSON.stringify({
+    username: username,
+    password: password
+  })
+  loginnReq.send(data)
+})
 // -----------------footer
 
 const footer = document.getElementById("footer")
