@@ -133,6 +133,23 @@ navIcons.innerHTML = `
 </a>
 `;
 
+// For global use of alert 
+// -----Alert
+const alertPlaceholder = document.getElementById(
+  "liveAlertPlaceholder"
+);
+const alert = (message, type) => {
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
+    `   <div>${message}</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    "</div>",
+  ].join("");
+
+  alertPlaceholder.append(wrapper);
+};
+
 
 // ************index.html part*******************
 
@@ -159,9 +176,9 @@ Best Buys
           </div>`
 
 // if condition to prevent errors on other HTML pages which tries to appendChild
-if(mainProductsDiv){
+if (mainProductsDiv) {
   mainProductsDiv.appendChild(mainH1)
-  
+
 }
 
 
@@ -170,7 +187,7 @@ const productsDiv = document.createElement("div");
 productsDiv.setAttribute("id", "products-grid")
 
 // if condition to prevent errors on other HTML pages which tries to appendChild
-if(mainProductsDiv){
+if (mainProductsDiv) {
   mainProductsDiv.appendChild(productsDiv)
 }
 
@@ -246,7 +263,7 @@ function createProducts(prod) {
   });
   return prodDiv;
 }
-if(allProdDiv){
+if (allProdDiv) {
   productsDiv.appendChild(allProdDiv)
 }
 
@@ -459,11 +476,6 @@ function addProduct() {
         // console.log("onClick success. Posting product : ",postProduct.responseText); // Display API response in console
         const response = JSON.parse(postProduct.responseText);
 
-        // -----Alert
-        const alertPlaceholder = document.getElementById(
-          "liveAlertPlaceholder"
-        );
-
         const alert = (message, type) => {
           const wrapper = document.createElement("div");
           wrapper.innerHTML = [
@@ -637,7 +649,7 @@ if (catProdDiv) {
       }
     }
   };
-  
+
   catProdReq.open("GET", localStorage.getItem("cat_link"));
   catProdReq.send();
 }
@@ -657,43 +669,43 @@ function catProducts(category) {
 // ---------------Limit 5 products
 
 
-function limitProd(n){  
+function limitProd(n) {
   // removing the div with has all products
   // allProdDiv.remove()
   const allProdDiv1 = document.querySelector("#allProdDiv")
-  if(allProdDiv1){
+  if (allProdDiv1) {
     allProdDiv1.parentNode.removeChild(allProdDiv1)
   }
   // to remove the div of products which could have been populated by previous limit request
   const limitedProdDiv1 = document.querySelector("#limitedProdDiv")
-  if(limitedProdDiv1){
+  if (limitedProdDiv1) {
     limitedProdDiv1.remove()
   }
   // to reset the active button when a button is clicked so that the other can get active at the end
   const element = document.querySelectorAll(`.dropdown-item`)
-  element.forEach((ele)=>{
-    if(ele.classList.contains("active")){
+  element.forEach((ele) => {
+    if (ele.classList.contains("active")) {
       ele.classList.remove("active")
     }
   })
-  
+
   const limitedProdDiv = document.createElement("div");
   limitedProdDiv.setAttribute("id", "limitedProdDiv");
   limitedProdDiv.classList.add("row", "g-4")
-  
+
   const getLimitedProdReq = new XMLHttpRequest()
-  
-  getLimitedProdReq.onreadystatechange = function(){
-    if(getLimitedProdReq.readyState === XMLHttpRequest.DONE){
-      if(getLimitedProdReq.status === 200){
+
+  getLimitedProdReq.onreadystatechange = function () {
+    if (getLimitedProdReq.readyState === XMLHttpRequest.DONE) {
+      if (getLimitedProdReq.status === 200) {
         const productsArray = JSON.parse(getLimitedProdReq.responseText)
-        productsArray.map(function(prod){
-          if(limitedProdDiv){
+        productsArray.map(function (prod) {
+          if (limitedProdDiv) {
             limitedProdDiv.appendChild(createProducts(prod))
           }
         })
       }
-      else{
+      else {
         alert("Some error occured.")
       }
     }
@@ -701,18 +713,18 @@ function limitProd(n){
   getLimitedProdReq.open("GET", `https://fakestoreapi.com/products?limit=${n}`)
   getLimitedProdReq.send()
 
-  if(limitedProdDiv){
+  if (limitedProdDiv) {
     productsDiv.appendChild(limitedProdDiv)
   }
 
   let nclass
-  if(n === 5){
+  if (n === 5) {
     nclass = "five"
   }
-  if(n === 10){
+  if (n === 10) {
     nclass = "ten"
   }
-  if(n === 15){
+  if (n === 15) {
     nclass = "fifteen"
   }
   const ele = document.querySelector(`.${nclass}`)
@@ -722,9 +734,9 @@ function limitProd(n){
 // -----------------User 
 const allUsersReq = new XMLHttpRequest();
 
-allUsersReq.onreadystatechange = function(){
-  if(allUsersReq.readyState === XMLHttpRequest.DONE){
-    if (allUsersReq.status === 200){
+allUsersReq.onreadystatechange = function () {
+  if (allUsersReq.readyState === XMLHttpRequest.DONE) {
+    if (allUsersReq.status === 200) {
       const usersArray = JSON.parse(allUsersReq.responseText)
       console.log("response is ", usersArray);
       usersArray.forEach(item => {
@@ -732,7 +744,7 @@ allUsersReq.onreadystatechange = function(){
         console.log("pass is ", item.password);
       })
     }
-    else{
+    else {
       alert("Some error occured.")
     }
   }
@@ -740,12 +752,12 @@ allUsersReq.onreadystatechange = function(){
 allUsersReq.open("GET", "https://fakestoreapi.com/users")
 allUsersReq.send()
 
-function login(){
+function login() {
   console.log("getting");
 }
 
 const loginForm = document.querySelector(".loginForm")
-loginForm.addEventListener("submit", function(event){
+loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
   var username = document.getElementById("username").value;
@@ -754,53 +766,52 @@ loginForm.addEventListener("submit", function(event){
   const loginnReq = new XMLHttpRequest();
   loginnReq.open("POST", "https://fakestoreapi.com/auth/login");
   loginnReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  loginnReq.onload = function(){
-    // -----Alert
-    const alertPlaceholder = document.getElementById(
-      "liveAlertPlaceholder"
-    );
-    if(loginnReq.status === 200){
+  loginnReq.onload = function () {
+    if (loginnReq.status === 200) {
       const response = JSON.parse(loginnReq.responseText)
       console.log("Logged in : ", response);
 
+      alert(
+        `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token.substring(0, 15)}.....${response.token.substring(response.token.length - 5, response.token.length)}`,
+        "success"
+      );
 
-        const alert = (message, type) => {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            "</div>",
-          ].join("");
+      // Reset form and close modal
+      const loginform = document.querySelector(".loginForm")
+      if (loginform) {
+        loginform.reset()
+      }
+      $("#login-modal").modal("hide");
 
-          alertPlaceholder.append(wrapper);
-        };
-
-        alert(
-          `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token.substring(0, 15)}.....${response.token.substring(response.token.length - 5, response.token.length)}`,
-          "success"
-        );
-
-        // Reset form and close modal
-        const loginform = document.querySelector(".loginForm")
-        if(loginform){
-          loginform.reset()
-        }
-        $("#login-modal").modal("hide");
-
-        // ---------remove the alert after some time
-        var alertElement = document.querySelector(".alert");
-        // delay the execution of the function that will hide the alert by 3 seconds
-        setTimeout(function () {
-          alertElement.remove();
-        }, 3000);
+      // ---------remove the alert after some time
+      var alertElement = document.querySelector(".alert");
+      // delay the execution of the function that will hide the alert by 3 seconds
+      setTimeout(function () {
+        alertElement.remove();
+      }, 3000);
     }
-    else{
-      console.log("Request failed. Status: " + loginnReq.status);
+    else {
+      alert(
+        `Failure <strong>${loginnReq.status}</strong> ! ${loginnReq.responseText}`,
+        "danger"
+      )
+      // Reset form and close modal
+      const loginform = document.querySelector(".loginForm")
+      if (loginform) {
+        loginform.reset()
+      }
+      $("#login-modal").modal("hide");
+
+      // ---------remove the alert after some time
+      var alertElement = document.querySelector(".alert");
+      // delay the execution of the function that will hide the alert by 3 seconds
+      setTimeout(function () {
+        alertElement.remove();
+      }, 3000);
     }
   }
-  loginnReq.onerror = function(){
-    console.log("Response failed. Status: "+loginnReq.status);
+  loginnReq.onerror = function () {
+    console.log("Response failed. Status: " + loginnReq.status);
   }
   var data = JSON.stringify({
     username: username,
