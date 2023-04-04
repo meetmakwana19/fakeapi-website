@@ -476,18 +476,6 @@ function addProduct() {
         // console.log("onClick success. Posting product : ",postProduct.responseText); // Display API response in console
         const response = JSON.parse(postProduct.responseText);
 
-        const alert = (message, type) => {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            "</div>",
-          ].join("");
-
-          alertPlaceholder.append(wrapper);
-        };
-
         alert(
           `Success <strong>${postProduct.status}</strong> ! Added Product. ID: ${response.id}`,
           "success"
@@ -536,23 +524,6 @@ function updateProduct(event) {
       if (updateReq.status === 200) {
         const response = JSON.parse(updateReq.responseText);
 
-        // -----Alert
-        const alertPlaceholder = document.getElementById(
-          "liveAlertPlaceholder"
-        );
-
-        const alert = (message, type) => {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center fixed-top z-3" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            "</div>",
-          ].join("");
-
-          alertPlaceholder.append(wrapper);
-        };
-
         alert(
           `Success <strong>${updateReq.status}</strong> ! Updated Product. ID: ${response.id}`,
           "success"
@@ -587,23 +558,6 @@ function deleteProduct(event) {
     if (deleteReq.readyState === XMLHttpRequest.DONE) {
       if (deleteReq.status === 200) {
         const response = JSON.parse(deleteReq.responseText);
-
-        // -----Alert
-        const alertPlaceholder = document.getElementById(
-          "liveAlertPlaceholder"
-        );
-
-        const alert = (message, type) => {
-          const wrapper = document.createElement("div");
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show d-flex align-items-center" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            "</div>",
-          ].join("");
-
-          alertPlaceholder.append(wrapper);
-        };
 
         alert(
           `Success <strong>${deleteReq.status}</strong> ! Deleted Product. ID: ${response.id}`,
