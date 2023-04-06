@@ -141,7 +141,7 @@ navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
 <div class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
     <i class="bi bi-person"></i>
-    <p>Profile</p>
+    <p class="username">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
 </div>
 <div class="d-flex flex-column text-center mx-4">
     <i class="bi bi-heart"></i>
@@ -723,11 +723,11 @@ allUsersReq.onreadystatechange = function () {
   if (allUsersReq.readyState === XMLHttpRequest.DONE) {
     if (allUsersReq.status === 200) {
       const usersArray = JSON.parse(allUsersReq.responseText)
-      console.log("response is ", usersArray);
-      usersArray.forEach(item => {
-        console.log("user is ", item.username);
-        console.log("pass is ", item.password);
-      })
+      // console.log("response is ", usersArray);
+      // usersArray.forEach(item => {
+      //   console.log("user is ", item.username);
+      //   console.log("pass is ", item.password);
+      // })
     }
     else {
       alert("Some error occured.")
@@ -747,6 +747,7 @@ loginForm.addEventListener("submit", function (event) {
 
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
+  localStorage.setItem("username", username)
 
   const loginnReq = new XMLHttpRequest();
   loginnReq.open("POST", "https://fakestoreapi.com/auth/login");
@@ -760,6 +761,11 @@ loginForm.addEventListener("submit", function (event) {
         `Success <strong>${loginnReq.status}</strong> ! Logged in . Token: ${response.token.substring(0, 15)}.....${response.token.substring(response.token.length - 5, response.token.length)}`,
         "success"
       );
+
+      const name = localStorage.getItem("username")
+      const user = document.querySelector(".username")
+      user.innerHTML = name
+      // findName()
 
       // Reset form and close modal
       const loginform = document.querySelector(".loginForm")
