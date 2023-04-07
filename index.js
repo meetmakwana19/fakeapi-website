@@ -88,12 +88,12 @@ function catProducts(category) {
   }
   // removing carousel 
   const carousel = document.querySelector("#carouselExample")
-  if(carousel){
+  if (carousel) {
     carousel.remove()
   }
   // updating H1
   const mainh1 = document.querySelector(".prod-h")
-  if(mainh1){
+  if (mainh1) {
     mainh1.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Products"
   }
 
@@ -200,14 +200,24 @@ body.appendChild(loginModal);
 const navIcons = document.createElement("div");
 navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
-<div class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
+<div class="dropdown">
+<div id="profileDiv" class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
     <i class="bi bi-person"></i>
-    <p class="username">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
+    <p class="username m-0">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
+    <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Full name</a></li>
+    <li><a class="dropdown-item" href="#">email</a></li>
+    <li><a class="dropdown-item" href="#">Phone</a></li>
+    <li><a class="dropdown-item" href="#">Address</a></li>
+  </ul>
+  </div>
 </div>
+
 <div class="d-flex flex-column text-center mx-4">
     <i class="bi bi-heart"></i>
-    <p>Wishlist</p>
+    <p class="m-0">Wishlist</p>
 </div>
+
 <div class="d-flex flex-column text-center mx-4">
     <i class="bi bi-handbag"></i>
     <p>Bag</p>
@@ -223,7 +233,7 @@ navIcons.innerHTML = `
     <p class="mb-0">Logout</p>
 </div>
 `;
-
+console.log("done!");
 // For global use of alert 
 // -----Alert
 const alertPlaceholder = document.getElementById(
@@ -792,7 +802,18 @@ allUsersReq.open("GET", "https://fakestoreapi.com/users")
 allUsersReq.send()
 
 function login() {
-  console.log("getting");
+  // console.log("getting");
+
+  // ---placing dropdown when user is logged in 
+  const user = localStorage.getItem("username");
+  if (user) {
+    console.log("checing user", user);
+    const profileDiv = document.querySelector("#profileDiv");
+    profileDiv.classList.add("dropdown-toggle")
+    profileDiv.setAttribute("data-bs-toggle", "dropdown")
+    profileDiv.setAttribute("aria-expanded", "false")
+  }
+
 }
 
 const loginForm = document.querySelector(".loginForm")
@@ -864,7 +885,6 @@ loginForm.addEventListener("submit", function (event) {
   })
   loginnReq.send(data)
 })
-
 
 function logMeOut() {
   localStorage.removeItem("username")
