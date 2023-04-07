@@ -223,7 +223,7 @@ navIcons.innerHTML = `
     <i class="bi bi-handbag"></i>
     <p>Bag</p>
     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    5
+    ${localStorage.getItem("cartCount")}
     <span class="visually-hidden">unread messages</span>
   </span>
 
@@ -368,6 +368,12 @@ if (productsDiv || dashboardContainer) {
 }
 // ---------------- Populating all products on index.html
 
+let cartCount = 0;
+function incrementCart(){
+  newCount = cartCount++;
+  localStorage.setItem("cartCount", newCount);
+  // console.log("hello");
+}
 const allProdDiv = document.createElement("div");
 allProdDiv.setAttribute("id", "allProdDiv");
 allProdDiv.classList.add("row", "g-4")
@@ -393,6 +399,7 @@ function createProducts(prod) {
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
     `;
+    // <button type="button" class="btn btn-secondary ms-auto" onclick="incrementCart()">Add to cart <i class="bi bi-bag-plus"></i></button>
   // --------Redirecting to product page
   prodDiv.addEventListener("click", function () {
     // saving product id in localstorage as when product.html is redirected, a new instance of javascript is genrated where the id info gets lost.
@@ -942,17 +949,20 @@ function logMeOut() {
 
 }
 
+
+//  no need of this now as logout div has been shifted to the dropdown xxxxxxxxxxxxxxxxxxxxx
+
 // ----Logout div needs to be deleted when the user is not logged in(means when the localstorage doesnt have a "username" variable)
 
 // This event fires when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
 document.addEventListener("DOMContentLoaded", function () {
   // to wait for external resources like stylesheets, images to load :
   window.onload = function () {
-    console.log("Attemmpting");
+    // console.log("Attemmpting");
     const logoutDiv = document.querySelector("#logout")
     const userPresent = localStorage.getItem("username")
-    console.log("logOutDiv is ", logoutDiv);
-    console.log("user is ", userPresent);
+    // console.log("logOutDiv is ", logoutDiv);
+    // console.log("user is ", userPresent);
     if (userPresent === null && logoutDiv) {
       console.log("hello from if");
       logoutDiv.style.setProperty("display", "none", "important")
