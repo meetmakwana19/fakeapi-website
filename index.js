@@ -254,6 +254,7 @@ const alert = (message, type) => {
 // ---------------- GET user info 
 
 let userObj = {};
+const user = localStorage.getItem("username");
 const getUserInfo = new XMLHttpRequest() 
 
 getUserInfo.onreadystatechange = function(){
@@ -268,8 +269,11 @@ getUserInfo.onreadystatechange = function(){
         return element.username === user;
       })
       document.querySelector("#fullname").innerHTML = `${userObj.name.firstname.toUpperCase()} ${userObj.name.lastname.toUpperCase()}`
+
       document.querySelector("#useremail").innerHTML = `${userObj.email}`
+
       document.querySelector("#phone").innerHTML = `${userObj.phone}`
+
       document.querySelector("#address").innerHTML = `Address : ${userObj.address.number}, ${userObj.address.street}, ${userObj.address.city}, ${userObj.address.zipcode}.`
     }
     else{
@@ -277,9 +281,11 @@ getUserInfo.onreadystatechange = function(){
     }
   }
 }
-getUserInfo.open("GET", "https://fakestoreapi.com/users")
-getUserInfo.send()
-console.log("found it ", userObj);
+if(user){
+  getUserInfo.open("GET", "https://fakestoreapi.com/users")
+  getUserInfo.send()
+}
+// console.log("found it ", userObj);
 
 // ----------------GET User cart info 
 // https://fakestoreapi.com/carts/user/3
