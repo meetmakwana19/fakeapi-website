@@ -218,9 +218,14 @@ navIcons.innerHTML = `
     <p class="m-0">Wishlist</p>
 </div>
 
-<div class="d-flex flex-column text-center mx-4">
+<div class="d-flex flex-column text-center mx-4 position-relative" type="button">
     <i class="bi bi-handbag"></i>
     <p>Bag</p>
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    5
+    <span class="visually-hidden">unread messages</span>
+  </span>
+
 </div>
 <a class="d-flex flex-column text-center mx-4" href="dashboard.html">
     <i class="bi bi-person-bounding-box"></i>
@@ -280,6 +285,12 @@ getUserInfo.onreadystatechange = function(){
 getUserInfo.open("GET", "https://fakestoreapi.com/users")
 getUserInfo.send()
 console.log("found it ", userObj);
+
+// ----------------GET User cart info 
+// https://fakestoreapi.com/carts/user/3
+// The api is not configured properly 
+
+
 // ************index.html part*******************
 
 // ----------------- GET all products part :
