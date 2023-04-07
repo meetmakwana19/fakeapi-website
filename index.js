@@ -205,10 +205,10 @@ navIcons.innerHTML = `
     <i class="bi bi-person"></i>
     <p class="username m-0">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
     <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Full name</a></li>
-    <li><a class="dropdown-item" href="#">email</a></li>
-    <li><a class="dropdown-item" href="#">Phone</a></li>
-    <li><a class="dropdown-item" href="#">Address</a></li>
+    <li><p class="dropdown-item" id="fullname">Full name</p></li>
+    <li><p class="dropdown-item" id="useremail">email</p></li>
+    <li><p class="dropdown-item" id="phone">Phone</p></li>
+    <li><p class="dropdown-item" id="address">Address</p></li>
   </ul>
   </div>
 </div>
@@ -251,6 +251,35 @@ const alert = (message, type) => {
   alertPlaceholder.append(wrapper);
 };
 
+// ---------------- GET user info 
+
+let userObj = {};
+const getUserInfo = new XMLHttpRequest() 
+
+getUserInfo.onreadystatechange = function(){
+  if(getUserInfo.readyState === XMLHttpRequest.DONE){
+    if(getUserInfo.status === 200){
+      console.log("users : ", JSON.parse(getUserInfo.responseText));
+
+      const usersArray = JSON.parse(getUserInfo.responseText)
+      const user = localStorage.getItem("username");
+      userObj = usersArray.find((element) => {
+        console.log("fetched user is ", element);
+        return element.username === user;
+      })
+      document.querySelector("#fullname").innerHTML = `${userObj.name.firstname.toUpperCase()} ${userObj.name.lastname.toUpperCase()}`
+      document.querySelector("#useremail").innerHTML = `${userObj.email}`
+      document.querySelector("#phone").innerHTML = `${userObj.phone}`
+      document.querySelector("#address").innerHTML = `Address : ${userObj.address.number}, ${userObj.address.street}, ${userObj.address.city}, ${userObj.address.zipcode}.`
+    }
+    else{
+      alert("Some error occured")
+    }
+  }
+}
+getUserInfo.open("GET", "https://fakestoreapi.com/users")
+getUserInfo.send()
+console.log("found it ", userObj);
 // ************index.html part*******************
 
 // ----------------- GET all products part :
