@@ -35,6 +35,7 @@ const alertDiv = document.createElement("div")
 alertDiv.setAttribute("id", "liveAlertPlaceholder")
 //  Add the child element as the second child of the parent element
 body.insertBefore(alertDiv, body.childNodes[1])
+
 // -------- Nav items
 // -------- GET all categories :
 
@@ -65,6 +66,66 @@ const navCollapseDiv = document.querySelector(".collapse");
 const navUlEl = document.createElement("ul");
 navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0");
 
+function catProducts(category) {
+  console.log("category is here ", category);
+  localStorage.setItem("cat_link", category);
+  // window.location.href = "products_category.html";
+  // const element = document.getElementById(`#${link}`);
+  // localStorage.setItem("cat_link", element.id);
+  // setTimeout(() => {
+  // }, 1000);
+  // event.preventDefault();  
+  // return false;
+
+  const allProdDiv1 = document.querySelector("#allProdDiv")
+  if (allProdDiv1) {
+    allProdDiv1.parentNode.removeChild(allProdDiv1)
+  }
+  // to remove the div of products which could have been populated by previous category request
+  const categoryProdDiv1 = document.querySelector("#categoryProdDiv")
+  if (categoryProdDiv1) {
+    categoryProdDiv1.remove()
+  }
+  // removing carousel 
+  const carousel = document.querySelector("#carouselExample")
+  if(carousel){
+    carousel.remove()
+  }
+  // updating H1
+  const mainh1 = document.querySelector(".prod-h")
+  if(mainh1){
+    mainh1.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Products"
+  }
+
+  const categoryProdDiv = document.createElement("div");
+  categoryProdDiv.setAttribute("id", "categoryProdDiv");
+  categoryProdDiv.classList.add("row", "g-4")
+
+  const getCatProdReq = new XMLHttpRequest()
+
+  getCatProdReq.onreadystatechange = function () {
+    if (getCatProdReq.readyState === XMLHttpRequest.DONE) {
+      if (getCatProdReq.status === 200) {
+        const productsArray = JSON.parse(getCatProdReq.responseText)
+        productsArray.map(function (prod) {
+          if (categoryProdDiv) {
+            categoryProdDiv.appendChild(createProducts(prod))
+          }
+        })
+      }
+      else {
+        alert("Some error occured.")
+      }
+    }
+  }
+  getCatProdReq.open("GET", `https://fakestoreapi.com/products/category/${category}`)
+  getCatProdReq.send()
+
+  if (categoryProdDiv) {
+    productsDiv.appendChild(categoryProdDiv)
+  }
+}
+
 let category_product_url = "https://fakestoreapi.com/products/category/";
 
 function createNavItems(cats) {
@@ -72,9 +133,9 @@ function createNavItems(cats) {
   liEl.classList.add("nav-item");
 
   const new_link = category_product_url + cats;
-  // console.log("saving", cats);
+  // var cat = cats;
   liEl.innerHTML = `
-    <a class="nav-link active" onClick="catProducts(${cats}) " aria-current="page" href="products_category.html" id="${new_link}">${cats.charAt(0).toUpperCase() + cats.slice(1)}</a>`;
+    <div class="nav-link active" onclick=catProducts("${cats}") id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
 
   navUlEl.appendChild(liEl);
   return navUlEl;
@@ -642,18 +703,6 @@ if (catProdDiv) {
 
   catProdReq.open("GET", localStorage.getItem("cat_link"));
   catProdReq.send();
-}
-
-function catProducts(category) {
-  console.log("category is here ", category);
-  localStorage.setItem("cat_link", category);
-  window.location.href = "products_category.html";
-  // const element = document.getElementById(`#${link}`);
-  // localStorage.setItem("cat_link", element.id);
-  // setTimeout(() => {
-  // }, 1000);
-  // event.preventDefault();  
-  // return false;
 }
 
 // ---------------Limit 5 products
