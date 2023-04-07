@@ -23,7 +23,7 @@ navbar.innerHTML = `
   aria-label="Toggle navigation">
   <span class="navbar-toggler-icon"></span>
 </button>
-<div class="collapse navbar-collapse mx-5" id="navbarSupportedContent">
+<div class="collapse navbar-collapse mx-4" id="navbarSupportedContent">
 </div>
 </div>
 `
@@ -154,7 +154,13 @@ navIcons.innerHTML = `
 <a class="d-flex flex-column text-center mx-4" href="dashboard.html">
     <i class="bi bi-person-bounding-box"></i>
     <p class="mb-0">Admin</p>
-</a>
+</a>`
+  +
+  `
+<div class="d-flex flex-column text-center mx-4" id="logout" onclick="logMeOut()" type="button" disabled="true">
+    <i class="bi bi-box-arrow-right"></i>
+    <p class="mb-0">Logout</p>
+</div>
 `;
 
 // For global use of alert 
@@ -173,7 +179,6 @@ const alert = (message, type) => {
 
   alertPlaceholder.append(wrapper);
 };
-
 
 // ************index.html part*******************
 
@@ -810,6 +815,33 @@ loginForm.addEventListener("submit", function (event) {
   })
   loginnReq.send(data)
 })
+
+
+function logMeOut() {
+  localStorage.removeItem("username")
+  console.log("yess loggin out");
+  const userP = document.querySelector(".username")
+  userP.innerHTML = `Profile`
+}
+
+// ----Logout div needs to be deleted when the user is not logged in(means when the localstorage doesnt have a "username" variable)
+
+// This event fires when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
+document.addEventListener("DOMContentLoaded", function () {
+  // to wait for external resources like stylesheets, images to load :
+  window.onload = function () {
+    console.log("Attemmpting");
+    const logoutDiv = document.querySelector("#logout")
+    const userPresent = localStorage.getItem("username")
+    console.log("logOutDiv is ", logoutDiv);
+    console.log("user is ", userPresent);
+    if (userPresent === null && logoutDiv) {
+      console.log("hello from if");
+      logoutDiv.style.setProperty("display", "none", "important")
+    }
+  }
+})
+
 // -----------------footer
 
 const footer = document.getElementById("footer")
