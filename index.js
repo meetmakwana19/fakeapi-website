@@ -204,11 +204,12 @@ navIcons.innerHTML = `
 <div id="profileDiv" class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
     <i class="bi bi-person"></i>
     <p class="username m-0">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu user-dropdown">
     <li><p class="dropdown-item" id="fullname">Full name</p></li>
     <li><p class="dropdown-item" id="useremail">email</p></li>
     <li><p class="dropdown-item" id="phone">Phone</p></li>
     <li><p class="dropdown-item" id="address">Address</p></li>
+    <li><p class="dropdown-item text-danger" id="logout" onclick="logMeOut()">Logout</p></li>
   </ul>
   </div>
 </div>
@@ -230,13 +231,7 @@ navIcons.innerHTML = `
 <a class="d-flex flex-column text-center mx-4" href="dashboard.html">
     <i class="bi bi-person-bounding-box"></i>
     <p class="mb-0">Admin</p>
-</a>`
-  +
-  `
-<div class="d-flex flex-column text-center mx-4" id="logout" onclick="logMeOut()" type="button" disabled="true">
-    <i class="bi bi-box-arrow-right"></i>
-    <p class="mb-0">Logout</p>
-</div>
+</a>
 `;
 console.log("done!");
 // For global use of alert 
@@ -849,7 +844,7 @@ function login() {
   if (user) {
     console.log("checing user", user);
     const profileDiv = document.querySelector("#profileDiv");
-    profileDiv.classList.add("dropdown-toggle")
+    // profileDiv.classList.add("dropdown-toggle")
     profileDiv.setAttribute("data-bs-toggle", "dropdown")
     profileDiv.setAttribute("aria-expanded", "false")
   }
@@ -928,9 +923,17 @@ loginForm.addEventListener("submit", function (event) {
 
 function logMeOut() {
   localStorage.removeItem("username")
-  console.log("yess loggin out");
+  // console.log("yess loggin out");
   const userP = document.querySelector(".username")
   userP.innerHTML = `Profile`
+
+  // delete dropdwown
+  const profileDrop = document.querySelector(".user-dropdown");
+  profileDrop.remove()
+  const profileDiv = document.querySelector("#profileDiv");
+  profileDiv.removeAttribute("data-bs-toggle")
+  profileDiv.removeAttribute("aria-expanded")
+
 }
 
 // ----Logout div needs to be deleted when the user is not logged in(means when the localstorage doesnt have a "username" variable)
