@@ -201,16 +201,16 @@ const navIcons = document.createElement("div");
 navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
 <div class="dropdown">
-<div id="profileDiv" class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
-    <i class="bi bi-person"></i>
-    <p class="username m-0">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
-    <ul class="dropdown-menu user-dropdown">
-    <li><p class="dropdown-item" id="fullname">Full name</p></li>
-    <li><p class="dropdown-item" id="useremail">email</p></li>
-    <li><p class="dropdown-item" id="phone">Phone</p></li>
-    <li><p class="dropdown-item" id="address">Address</p></li>
-    <li><p class="dropdown-item text-danger" id="logout" onclick="logMeOut()">Logout</p></li>
-  </ul>
+  <div id="profileDiv" class="d-flex flex-column text-center mx-4" onclick="login()" type="button" data-bs-toggle="modal" data-bs-target="#login-modal">
+      <i class="bi bi-person"></i>
+      <p class="username m-0">${localStorage.getItem("username") ? localStorage.getItem("username") : "Profile"}</p>
+      <ul class="dropdown-menu user-dropdown">
+      <li><p class="dropdown-item" id="fullname">Full name</p></li>
+      <li><p class="dropdown-item" id="useremail">email</p></li>
+      <li><p class="dropdown-item" id="phone">Phone</p></li>
+      <li><p class="dropdown-item" id="address">Address</p></li>
+      <li><p class="dropdown-item text-danger" id="logout" onclick="logMeOut()">Logout</p></li>
+    </ul>
   </div>
 </div>
 
@@ -254,11 +254,11 @@ const alert = (message, type) => {
 
 let userObj = {};
 const user = localStorage.getItem("username");
-const getUserInfo = new XMLHttpRequest() 
+const getUserInfo = new XMLHttpRequest()
 
-getUserInfo.onreadystatechange = function(){
-  if(getUserInfo.readyState === XMLHttpRequest.DONE){
-    if(getUserInfo.status === 200){
+getUserInfo.onreadystatechange = function () {
+  if (getUserInfo.readyState === XMLHttpRequest.DONE) {
+    if (getUserInfo.status === 200) {
       console.log("users : ", JSON.parse(getUserInfo.responseText));
 
       const usersArray = JSON.parse(getUserInfo.responseText)
@@ -275,16 +275,13 @@ getUserInfo.onreadystatechange = function(){
 
       document.querySelector("#address").innerHTML = `Address : ${userObj.address.number}, ${userObj.address.street}, ${userObj.address.city}, ${userObj.address.zipcode}.`
     }
-    else{
+    else {
       alert("Some error occured")
     }
   }
 }
-if(user){
-  getUserInfo.open("GET", "https://fakestoreapi.com/users")
-  getUserInfo.send()
-}
-// console.log("found it ", userObj);
+// open and send() requests are in the login()
+
 
 // ----------------GET User cart info 
 // https://fakestoreapi.com/carts/user/3
@@ -368,7 +365,7 @@ if (productsDiv || dashboardContainer) {
 // ---------------- Populating all products on index.html
 
 let cartCount = 0;
-function incrementCart(){
+function incrementCart() {
   newCount = cartCount++;
   localStorage.setItem("cartCount", newCount);
   // console.log("hello");
@@ -398,7 +395,7 @@ function createProducts(prod) {
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
     `;
-    // <button type="button" class="btn btn-secondary ms-auto" onclick="incrementCart()">Add to cart <i class="bi bi-bag-plus"></i></button>
+  // <button type="button" class="btn btn-secondary ms-auto" onclick="incrementCart()">Add to cart <i class="bi bi-bag-plus"></i></button>
   // --------Redirecting to product page
   prodDiv.addEventListener("click", function () {
     // saving product id in localstorage as when product.html is redirected, a new instance of javascript is genrated where the id info gets lost.
@@ -849,18 +846,16 @@ allUsersReq.open("GET", "https://fakestoreapi.com/users")
 allUsersReq.send()
 
 function login() {
-  // console.log("getting");
-
   // ---placing dropdown when user is logged in 
   const user = localStorage.getItem("username");
   if (user) {
-    console.log("checing user", user);
     const profileDiv = document.querySelector("#profileDiv");
-    // profileDiv.classList.add("dropdown-toggle")
     profileDiv.setAttribute("data-bs-toggle", "dropdown")
     profileDiv.setAttribute("aria-expanded", "false")
-  }
 
+    getUserInfo.open("GET", "https://fakestoreapi.com/users")
+    getUserInfo.send()
+  }
 }
 
 const loginForm = document.querySelector(".loginForm")
@@ -895,6 +890,17 @@ loginForm.addEventListener("submit", function (event) {
         loginform.reset()
       }
       $("#login-modal").modal("hide");
+
+      // ---placing dropdown when user is logged in 
+      const username = localStorage.getItem("username");
+      if (username) {
+        const profileDiv = document.querySelector("#profileDiv");
+        profileDiv.setAttribute("data-bs-toggle", "dropdown")
+        profileDiv.setAttribute("aria-expanded", "false")
+
+        getUserInfo.open("GET", "https://fakestoreapi.com/users")
+        getUserInfo.send()
+      }
 
       // ---------remove the alert after some time
       var alertElement = document.querySelector(".alert");
@@ -940,11 +946,14 @@ function logMeOut() {
   userP.innerHTML = `Profile`
 
   // delete dropdwown
-  const profileDrop = document.querySelector(".user-dropdown");
-  profileDrop.remove()
-  const profileDiv = document.querySelector("#profileDiv");
-  // profileDiv.removeAttribute("data-bs-toggle")
-  profileDiv.removeAttribute("aria-expanded")
+  // const profileDrop = document.querySelector(".user-dropdown");
+  // profileDrop.remove()
+  // const profileDiv = document.querySelector("#profileDiv");
+  // // profileDiv.removeAttribute("data-bs-toggle")
+  // profileDiv.removeAttribute("aria-expanded")
+
+  // no need to delete dropdown we are just reloading the page on logout so a new JS instance is created 
+  location.reload()
 
 }
 
