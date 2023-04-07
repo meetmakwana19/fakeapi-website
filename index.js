@@ -223,10 +223,9 @@ navIcons.innerHTML = `
     <i class="bi bi-handbag"></i>
     <p>Bag</p>
     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    ${localStorage.getItem("cartCount")}
+    ${localStorage.getItem("cartCount") ? localStorage.getItem("cartCount") : "99+"} 
     <span class="visually-hidden">unread messages</span>
   </span>
-
 </div>
 <a class="d-flex flex-column text-center mx-4" href="dashboard.html">
     <i class="bi bi-person-bounding-box"></i>
@@ -944,7 +943,7 @@ function logMeOut() {
   const profileDrop = document.querySelector(".user-dropdown");
   profileDrop.remove()
   const profileDiv = document.querySelector("#profileDiv");
-  profileDiv.removeAttribute("data-bs-toggle")
+  // profileDiv.removeAttribute("data-bs-toggle")
   profileDiv.removeAttribute("aria-expanded")
 
 }

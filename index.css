@@ -27,6 +27,16 @@
     font-size: small;
     margin: 0;
 }
+.nav-icons > div > div > p {
+    font-weight: bold;
+    font-size: small;
+    margin: 0;
+}
+.nav-icons > a > p {
+    font-weight: bold;
+    font-size: small;
+    margin: 0;
+}
 .bi-person, .bi-heart, .bi-handbag, .bi-person-bounding-box, .bi-box-arrow-right{
     font-size: 150%;
 }
