@@ -9,7 +9,7 @@ console.log(a);
 let product_id;
 
 // *****************Navbar********************
-
+// common to all pages as all pages share same JS file
 const navbar = document.createElement("nav")
 navbar.classList.add("navbar", "navbar-expand-lg", "bg-body-tertiary", "sticky-top")
 navbar.innerHTML = `
@@ -27,16 +27,18 @@ navbar.innerHTML = `
 </div>
 </div>
 `
-const body = document.body
+
 // adding navbar as the first child of the body to make navbar on the top of body
+const body = document.body
 body.insertBefore(navbar, body.firstChild)
 
 const alertDiv = document.createElement("div")
 alertDiv.setAttribute("id", "liveAlertPlaceholder")
-//  Add the child element as the second child of the parent element
+//  Adding the child(alertDiv) element as the second child of the parent element(body) to make the alert appear under the navbar
 body.insertBefore(alertDiv, body.childNodes[1])
 
 // -------- Nav items
+
 // -------- GET all categories :
 
 const categories_req = new XMLHttpRequest();
@@ -62,13 +64,13 @@ categories_req.onreadystatechange = function () {
 };
 
 const navCollapseDiv = document.querySelector(".collapse");
-
 const navUlEl = document.createElement("ul");
 navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0");
 
 function catProducts(category) {
   console.log("category is here ", category);
   localStorage.setItem("cat_link", category);
+
   // window.location.href = "products_category.html";
   // const element = document.getElementById(`#${link}`);
   // localStorage.setItem("cat_link", element.id);
@@ -77,6 +79,7 @@ function catProducts(category) {
   // event.preventDefault();  
   // return false;
 
+  // to remove the div of products which were  populated by all products request on the index.html
   const allProdDiv1 = document.querySelector("#allProdDiv")
   if (allProdDiv1) {
     allProdDiv1.parentNode.removeChild(allProdDiv1)
@@ -97,6 +100,7 @@ function catProducts(category) {
     mainh1.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Products"
   }
 
+  // making the div for catgorical products
   const categoryProdDiv = document.createElement("div");
   categoryProdDiv.setAttribute("id", "categoryProdDiv");
   categoryProdDiv.classList.add("row", "g-4")
@@ -118,14 +122,17 @@ function catProducts(category) {
       }
     }
   }
+  // making the link dynamic
   getCatProdReq.open("GET", `https://fakestoreapi.com/products/category/${category}`)
   getCatProdReq.send()
 
+  // putting the created categoryProdDiv under the main productsDiv
   if (categoryProdDiv) {
     productsDiv.appendChild(categoryProdDiv)
   }
 }
 
+// making a base url to fetch products category wise
 let category_product_url = "https://fakestoreapi.com/products/category/";
 
 function createNavItems(cats) {
@@ -141,6 +148,7 @@ function createNavItems(cats) {
   return navUlEl;
 }
 
+// to fetch categories for the nav-links
 categories_req.open("GET", "https://fakestoreapi.com/products/categories");
 categories_req.send();
 
@@ -153,13 +161,17 @@ navForm.innerHTML = `
 <input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
 <button class="btn btn-outline-success" type="submit">Search</button>
 `;
-const popoverTriggerList = document.querySelectorAll(
-  '[data-bs-toggle="popover"]'
-);
-const popoverList = [...popoverTriggerList].map(
-  (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
-);
 
+// no need of popper
+
+// const popoverTriggerList = document.querySelectorAll(
+//   '[data-bs-toggle="popover"]'
+// );
+// const popoverList = [...popoverTriggerList].map(
+//   (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
+// );
+
+// creation of moda div for login 
 const loginModal = document.createElement("div")
 loginModal.classList.add("modal", "fade")
 loginModal.setAttribute("id", "login-modal");
@@ -197,6 +209,7 @@ loginModal.innerHTML = `
 // appending modal to any element which has fixed/relative position will cause back-drop of whole page
 body.appendChild(loginModal);
 
+// a part of navbar
 const navIcons = document.createElement("div");
 navIcons.classList.add("nav-icons", "d-flex", "align-items-center");
 navIcons.innerHTML = `
@@ -232,8 +245,8 @@ navIcons.innerHTML = `
     <p class="mb-0">Admin</p>
 </a>
 `;
-console.log("done!");
-// For global use of alert 
+
+// For global use of alert under the navbar
 // -----Alert
 const alertPlaceholder = document.getElementById(
   "liveAlertPlaceholder"
@@ -246,7 +259,6 @@ const alert = (message, type) => {
     '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
     "</div>",
   ].join("");
-
   alertPlaceholder.append(wrapper);
 };
 
@@ -280,12 +292,11 @@ getUserInfo.onreadystatechange = function () {
     }
   }
 }
+
 // open and send() requests are in the login()
-
-
 // ----------------GET User cart info 
 // https://fakestoreapi.com/carts/user/3
-// The api is not configured properly 
+// ***** The api is not configured properly 
 
 
 // ************index.html part*******************
@@ -315,9 +326,7 @@ Best Buys
 // if condition to prevent errors on other HTML pages which tries to appendChild
 if (mainProductsDiv) {
   mainProductsDiv.appendChild(mainH1)
-
 }
-
 
 // const productsDiv = document.querySelector("#products-grid");
 const productsDiv = document.createElement("div");
@@ -364,6 +373,7 @@ if (productsDiv || dashboardContainer) {
 }
 // ---------------- Populating all products on index.html
 
+// not using cartCount & incrementCart() currently
 let cartCount = 0;
 function incrementCart() {
   newCount = cartCount++;
@@ -508,6 +518,8 @@ h4.setAttribute("data-bs-target", "#post-modal");
 h4.innerHTML = `
 Add a product <i class="bi bi-plus-circle-fill"></i>`;
 
+// Modal for adding a product :
+
 const modalDiv = document.createElement("div");
 modalDiv.classList.add("modal", "fade");
 modalDiv.setAttribute("id", "post-modal");
@@ -539,6 +551,8 @@ modalDiv.innerHTML = `
   </div>
 </div>`;
 
+// Table to show product data : 
+
 const table = document.createElement("table");
 table.classList.add("table", "table-hover", "table-borderless", "my-5");
 
@@ -565,7 +579,7 @@ if (dashboardContainer) {
   dashboardContainer.appendChild(table);
 }
 
-// this also has update modal as td elements has edit icon
+// dashboard.html also has update modal as td elements has edit icon
 function createTable(prod) {
   const trBody = document.createElement("tr");
 
@@ -760,7 +774,6 @@ if (catProdDiv) {
 }
 
 // ---------------Limit 5 products
-
 
 function limitProd(n) {
   // removing the div with has all products
@@ -963,20 +976,20 @@ function logMeOut() {
 // ----Logout div needs to be deleted when the user is not logged in(means when the localstorage doesnt have a "username" variable)
 
 // This event fires when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
-document.addEventListener("DOMContentLoaded", function () {
-  // to wait for external resources like stylesheets, images to load :
-  window.onload = function () {
-    // console.log("Attemmpting");
-    const logoutDiv = document.querySelector("#logout")
-    const userPresent = localStorage.getItem("username")
-    // console.log("logOutDiv is ", logoutDiv);
-    // console.log("user is ", userPresent);
-    if (userPresent === null && logoutDiv) {
-      console.log("hello from if");
-      logoutDiv.style.setProperty("display", "none", "important")
-    }
-  }
-})
+// document.addEventListener("DOMContentLoaded", function () {
+//   // to wait for external resources like stylesheets, images to load :
+//   window.onload = function () {
+//     // console.log("Attemmpting");
+//     const logoutDiv = document.querySelector("#logout")
+//     const userPresent = localStorage.getItem("username")
+//     // console.log("logOutDiv is ", logoutDiv);
+//     // console.log("user is ", userPresent);
+//     if (userPresent === null && logoutDiv) {
+//       console.log("hello from if");
+//       logoutDiv.style.setProperty("display", "none", "important")
+//     }
+//   }
+// })
 
 // -----------------footer
 
