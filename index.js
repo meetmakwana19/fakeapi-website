@@ -141,7 +141,8 @@ function createNavItems(cats) {
   liEl.classList.add("nav-item");
 
   const new_link = category_product_url + cats;
-  // var cat = cats;
+
+  // console.log("Categories fetched with apostrophe: ", cats);
   // onclick function is imp to populate categorywise products on index.html itself
   liEl.innerHTML = `
     <div class="nav-link active" onclick=catProducts("${cats}") id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
