@@ -67,8 +67,9 @@ const navCollapseDiv = document.querySelector(".collapse");
 const navUlEl = document.createElement("ul");
 navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0");
 
+// to populate the categorywise products on index.html itself instead of some other html page.
 function catProducts(category) {
-  console.log("category is here ", category);
+  // console.log("category is here ", category);
   localStorage.setItem("cat_link", category);
 
   // window.location.href = "products_category.html";
@@ -141,6 +142,7 @@ function createNavItems(cats) {
 
   const new_link = category_product_url + cats;
   // var cat = cats;
+  // onclick function is imp to populate categorywise products on index.html itself
   liEl.innerHTML = `
     <div class="nav-link active" onclick=catProducts("${cats}") id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
 
@@ -735,6 +737,8 @@ function deleteProduct(event) {
   };
   deleteReq.send();
 }
+
+// no need of this section for this html page as now products are getting fetched on index.html only. so ignore this small part and read directly the limitProd() function.
 
 // ------------------products_category.html
 
