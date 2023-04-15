@@ -6,6 +6,7 @@ a = document.body;
 
 console.log(a);
 
+// Using this keyword while redirecting to product page
 let product_id;
 
 // *****************Navbar********************
@@ -34,6 +35,7 @@ body.insertBefore(navbar, body.firstChild)
 
 const alertDiv = document.createElement("div")
 alertDiv.setAttribute("id", "liveAlertPlaceholder")
+
 //  Adding the child(alertDiv) element as the second child of the parent element(body) to make the alert appear under the navbar
 body.insertBefore(alertDiv, body.childNodes[1])
 
