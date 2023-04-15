@@ -69,9 +69,19 @@ navUlEl.classList.add("navbar-nav", "me-auto", "mb-2", "mb-lg-0");
 
 // to populate the categorywise products on index.html itself instead of some other html page.
 function catProducts(category) {
-  // console.log("category is here ", category);
-  localStorage.setItem("cat_link", category);
+  // console.log("checking this : ", this);
 
+  // console.log("category element = ", category);
+
+  // console.log("category is here ", category.getAttribute("data-category"));
+
+  // setting the recieved parameter from div element to the value of category. 
+  category = category.getAttribute("data-category")
+
+  // IGNORE : this localstorage was used to make dynamic link for the prodycts_category.html but commenting it away as it is not getting used anymore
+  // localStorage.setItem("cat_link", category);
+
+  // IGNORE :
   // window.location.href = "products_category.html";
   // const element = document.getElementById(`#${link}`);
   // localStorage.setItem("cat_link", element.id);
@@ -80,6 +90,7 @@ function catProducts(category) {
   // event.preventDefault();  
   // return false;
 
+  // CONTINUE :
   // to remove the div of products which were  populated by all products request on the index.html
   const allProdDiv1 = document.querySelector("#allProdDiv")
   if (allProdDiv1) {
@@ -124,7 +135,7 @@ function catProducts(category) {
     }
   }
   // making the link dynamic
-  getCatProdReq.open("GET", `https://fakestoreapi.com/products/category/${category}`)
+  getCatProdReq.open("GET", "https://fakestoreapi.com/products/category/"+ category)
   getCatProdReq.send()
 
   // putting the created categoryProdDiv under the main productsDiv
@@ -142,10 +153,22 @@ function createNavItems(cats) {
 
   const new_link = category_product_url + cats;
 
-  // console.log("Categories fetched with apostrophe: ", cats);
+  console.log("Categories fetched with apostrophe: ", cats);
+
   // onclick function is imp to populate categorywise products on index.html itself
+
+  // data-category is a custom data-* Attribute for the HTML element to store custom data which would be private to the web page only.
+  // Passing the category value by wrapping it in encodeURI() which helps convert a URL string into a format that can be used as a valid URL. 
+  // It does this by encoding certain characters in the URL string that have special meanings in URLs, such as spaces, apostrophes, and other special characters.
+  // URL string like /men's clothing, which contains an apostrophe and a space, can use the encodeURI() function to convert it into a URL string like /men's%20clothing, where the apostrophe has been left intact but the space has been replaced with %20.
+  // Now URL parsing wont have any issues 
   liEl.innerHTML = `
-    <div class="nav-link active" onclick=catProducts("${cats}") id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
+    <div 
+      data-category=${encodeURI(cats)}
+    class="nav-link active" onclick=catProducts(this) id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
+    // passing (this) as a parameter in an event handler function is a common way to access the properties and methods of the element that triggered the event. 
+    // It allows you to write generic event handler functions that can be reused for multiple elements, rather than writing a separate function for each element.
+    // So whole <div> is passed as parameter upon which getAttribute("data-category") can be used to retrive the category value.
 
   navUlEl.appendChild(liEl);
   return navUlEl;
@@ -408,7 +431,10 @@ function createProducts(prod) {
     <h5 class="text-start me-auto">${prod.title}</h5>
     <h6 class="me-auto">Rs. ${prod.price}</h6>
     `;
+    
+  // IGNORE :
   // <button type="button" class="btn btn-secondary ms-auto" onclick="incrementCart()">Add to cart <i class="bi bi-bag-plus"></i></button>
+
   // --------Redirecting to product page
   prodDiv.addEventListener("click", function () {
     // saving product id in localstorage as when product.html is redirected, a new instance of javascript is genrated where the id info gets lost.
@@ -774,8 +800,8 @@ if (catProdDiv) {
     }
   };
 
-  catProdReq.open("GET", localStorage.getItem("cat_link"));
-  catProdReq.send();
+  // catProdReq.open("GET", localStorage.getItem("cat_link"));
+  // catProdReq.send();
 }
 
 // ---------------Limit 5 products
