@@ -146,16 +146,17 @@ function catProducts(category) {
   }
 }
 
-// making a base url to fetch products category wise
-let category_product_url = "https://fakestoreapi.com/products/category/";
+// IGNORE : making a base url to fetch products category wise
+// let category_product_url = "https://fakestoreapi.com/products/category/";
 
 function createNavItems(cats) {
   const liEl = document.createElement("li");
   liEl.classList.add("nav-item");
 
-  const new_link = category_product_url + cats;
+  // IGNORE :
+  // const new_link = category_product_url + cats;
 
-  console.log("Categories fetched with apostrophe: ", cats);
+  // console.log("Categories fetched with apostrophe: ", cats);
 
   // onclick function is imp to populate categorywise products on index.html itself
 
@@ -167,7 +168,7 @@ function createNavItems(cats) {
   liEl.innerHTML = `
     <div 
       data-category=${encodeURI(cats)}
-    class="nav-link active" onclick=catProducts(this) id="${new_link}" role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
+    class="nav-link active" onclick=catProducts(this) role="button">${cats.charAt(0).toUpperCase() + cats.slice(1)}</div>`;
     // passing (this) as a parameter in an event handler function is a common way to access the properties and methods of the element that triggered the event. 
     // It allows you to write generic event handler functions that can be reused for multiple elements, rather than writing a separate function for each element.
     // So whole <div> is passed as parameter upon which getAttribute("data-category") can be used to retrive the category value.
@@ -190,8 +191,8 @@ navForm.innerHTML = `
 <button class="btn btn-outline-success" type="submit">Search</button>
 `;
 
+// IGNORE :
 // no need of popper
-
 // const popoverTriggerList = document.querySelectorAll(
 //   '[data-bs-toggle="popover"]'
 // );
@@ -199,6 +200,7 @@ navForm.innerHTML = `
 //   (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
 // );
 
+// CONTINUE :
 // creation of moda div for login 
 const loginModal = document.createElement("div")
 loginModal.classList.add("modal", "fade")
@@ -437,6 +439,7 @@ function createProducts(prod) {
   // IGNORE :
   // <button type="button" class="btn btn-secondary ms-auto" onclick="incrementCart()">Add to cart <i class="bi bi-bag-plus"></i></button>
 
+  // CONTNUE :
   // --------Redirecting to product page
   prodDiv.addEventListener("click", function () {
     // saving product id in localstorage as when product.html is redirected, a new instance of javascript is genrated where the id info gets lost.
@@ -677,6 +680,7 @@ function addProduct() {
         // ---------remove the alert after some time
         var alertElement = document.querySelector(".alert");
         // delay the execution of the function that will hide the alert by 3 seconds
+        // even if there exists any multiple alerts which were added by multiple button clicks then handling their deletion here
         setTimeout(function () {
           alertElement.remove();
         }, 3000);
@@ -687,11 +691,6 @@ function addProduct() {
   };
   postProduct.send(JSON.stringify(payload));
 }
-// even if there exists any multiple alerts which were added by multiple button clicks then handling their deletion here
-// var alertElement = document.querySelector(".alert");
-// setTimeout(function () {
-//   alertElement.remove();
-// }, 3000);
 
 // **************Update product using PUT
 function setEditId(idx) {
@@ -767,6 +766,8 @@ function deleteProduct(event) {
   deleteReq.send();
 }
 
+// IGNORE this section :
+
 // no need of this section for this html page as now products are getting fetched on index.html only. so ignore this small part and read directly the limitProd() function.
 
 // ------------------products_category.html
@@ -806,6 +807,7 @@ if (catProdDiv) {
   // catProdReq.send();
 }
 
+// CONTINUE :
 // ---------------Limit 5 products
 
 function limitProd(n) {
@@ -991,6 +993,7 @@ function logMeOut() {
   const userP = document.querySelector(".username")
   userP.innerHTML = `Profile`
 
+  // IGNORE :
   // delete dropdwown
   // const profileDrop = document.querySelector(".user-dropdown");
   // profileDrop.remove()
@@ -998,12 +1001,14 @@ function logMeOut() {
   // // profileDiv.removeAttribute("data-bs-toggle")
   // profileDiv.removeAttribute("aria-expanded")
 
+  // CONTINUE:
   // no need to delete dropdown we are just reloading the page on logout so a new JS instance is created 
   location.reload()
 
 }
 
 
+// IGNORE:
 //  no need of this now as logout div has been shifted to the dropdown xxxxxxxxxxxxxxxxxxxxx
 
 // ----Logout div needs to be deleted when the user is not logged in(means when the localstorage doesnt have a "username" variable)
@@ -1023,6 +1028,8 @@ function logMeOut() {
 //     }
 //   }
 // })
+
+// CONTINUE :
 
 // -----------------footer
 
