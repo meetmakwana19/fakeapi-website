@@ -872,6 +872,7 @@ function limitProd(n) {
   ele.classList.add("active");
 }
 
+// IGNORE :
 // -----------------User 
 const allUsersReq = new XMLHttpRequest();
 
@@ -892,6 +893,8 @@ allUsersReq.onreadystatechange = function () {
 }
 allUsersReq.open("GET", "https://fakestoreapi.com/users")
 allUsersReq.send()
+
+// CONTINUE :
 
 function login() {
   // ---placing dropdown when user is logged in 
